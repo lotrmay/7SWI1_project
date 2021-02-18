@@ -1,0 +1,61 @@
+CREATE TABLE `address` (
+  `id` int(11) NOT NULL,
+  `state` enum('CZ','SK','PL','AT','DE') COLLATE utf8_czech_ci NOT NULL,
+  `city` varchar(30) COLLATE utf8_czech_ci NOT NULL,
+  `street` varchar(20) COLLATE utf8_czech_ci NOT NULL,
+  `street_number` varchar(15) COLLATE utf8_czech_ci NOT NULL,
+  `post_code` varchar(15) COLLATE utf8_czech_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+CREATE TABLE `customer` (
+  `id` int(11) NOT NULL,
+  `id_address` int(11) NOT NULL,
+  `firstName` varchar(15) COLLATE utf8_czech_ci NOT NULL,
+  `surname` varchar(15) COLLATE utf8_czech_ci NOT NULL,
+  `telephoneNumber` varchar(15) COLLATE utf8_czech_ci NOT NULL,
+  `email` varchar(40) COLLATE utf8_czech_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL,
+  `id_customer` int(11) NOT NULL,
+  `registration_plate` varchar(8) COLLATE utf8_czech_ci NOT NULL,
+  `type_of_car` varchar(30) COLLATE utf8_czech_ci NOT NULL,
+  `date_of_fulfillment` datetime NOT NULL,
+  `year_of_production` year(4) NOT NULL,
+  `car_service` tinyint(1) NOT NULL DEFAULT 0,
+  `tire_service` tinyint(1) NOT NULL DEFAULT 0,
+  `other_service` tinyint(1) NOT NULL DEFAULT 0,
+  `note` text COLLATE utf8_czech_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+
+ ALTER TABLE `address`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `customer`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `customer_address_id_fk` (`id_address`);
+
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `orders_customer_id_fk` (`id_customer`);
+
+
+ALTER TABLE `address`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `customer`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `customer`
+  ADD CONSTRAINT `customer_address_id_fk` FOREIGN KEY (`id_address`) REFERENCES `address` (`id`);
+
+
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_customer_id_fk` FOREIGN KEY (`id_customer`) REFERENCES `customer` (`id`);
