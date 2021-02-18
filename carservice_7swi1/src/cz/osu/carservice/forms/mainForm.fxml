@@ -1,55 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-radius: 30 30 30 30; -fx-background-color: #f5b942;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.osu.carservice.controllers.MainFormController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-radius: 30 30 30 30; -fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.osu.carservice.controllers.MainFormController">
    <children>
-      <HBox maxWidth="Infinity" prefHeight="100.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+      <HBox maxWidth="Infinity" prefHeight="100.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="15.0">
          <children>
-            <HBox maxHeight="1.7976931348623157E308" maxWidth="250.0" HBox.hgrow="ALWAYS">
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Button maxHeight="1.7976931348623157E308" maxWidth="Infinity" mnemonicParsing="false" text="Button" HBox.hgrow="ALWAYS" />
-                  <Button maxHeight="1.7976931348623157E308" maxWidth="Infinity" mnemonicParsing="false" text="Button" HBox.hgrow="ALWAYS" />
-                  <Button maxHeight="1.7976931348623157E308" maxWidth="Infinity" mnemonicParsing="false" text="Button" HBox.hgrow="ALWAYS" />
+                  <ImageView fx:id="facebookBtn" fitHeight="50.0" fitWidth="80.0" onMouseClicked="#runFacebook" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/mainForm/facebook_logo.png" />
+                     </image>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
+                     <HBox.margin>
+                        <Insets right="15.0" top="25.0" />
+                     </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fx:id="instagramBtn" fitHeight="50.0" fitWidth="80.0" onMouseClicked="#runInstagram" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/mainForm/instagram_logo.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="15.0" top="25.0" />
+                     </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fx:id="twitterBtn" fitHeight="50.0" fitWidth="80.0" onMouseClicked="#runTwitter" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/mainForm/twitter_logo.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <HBox.margin>
+                        <Insets top="25.0" />
+                     </HBox.margin>
+                  </ImageView>
                </children>
             </HBox>
             <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                <children>
-                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Label" />
-                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Label" />
+                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Autoservis">
+                     <font>
+                        <Font name="Commons Regular" size="30.0" />
+                     </font></Label>
+                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="NOVÁK">
+                     <font>
+                        <Font name="Commons Regular" size="18.0" />
+                     </font></Label>
                </children>
             </VBox>
-            <HBox alignment="TOP_RIGHT" maxWidth="250.0" HBox.hgrow="ALWAYS">
+            <HBox alignment="TOP_RIGHT" maxWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Button fx:id="closeBtn" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#closeApplication" text="Button" />
+                  <ImageView fx:id="closeBtn" fitHeight="50.0" fitWidth="80.0" onMouseClicked="#closeApplication" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/mainImages/close_btn.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <HBox.margin>
+                        <Insets top="25.0" />
+                     </HBox.margin>
+                  </ImageView>
                </children>
             </HBox>
          </children>
       </HBox>
       <HBox alignment="CENTER" layoutX="15.0" layoutY="115.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="115.0">
          <children>
-            <Button fx:id="createOrderBtn" minHeight="250.0" minWidth="250.0" mnemonicParsing="false" onAction="#showOrderForm" text="Button">
+            <Button fx:id="createOrderBtn" minHeight="250.0" minWidth="250.0" mnemonicParsing="false" onAction="#showOrderForm" text="createOrder">
                <HBox.margin>
                   <Insets right="50.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="orderListBtn" minHeight="250.0" minWidth="250.0" mnemonicParsing="false" onAction="#showOrderListForm" text="Button">
+            <Button fx:id="orderListBtn" minHeight="250.0" minWidth="250.0" mnemonicParsing="false" onAction="#showOrderListForm" text="getListOfOrders">
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
             </Button>
          </children>
       </HBox>
-      <Label layoutX="15.0" layoutY="550.0" text="Potřebuje pomoct ?" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="550.0">
+      <Label fx:id="helpBtn" layoutX="15.0" layoutY="550.0" onMouseClicked="#runHelpSite" text="Potřebuje pomoct ?" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="550.0">
          <font>
-            <Font size="15.0" />
+            <Font name="System Italic" size="16.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Label>
    </children>
 </AnchorPane>
