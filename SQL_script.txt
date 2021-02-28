@@ -7,6 +7,9 @@ CREATE TABLE `address` (
   `post_code` varchar(15) COLLATE utf8_czech_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
+INSERT INTO `address` (`id`, `state`, `city`, `street`, `street_number`, `post_code`) VALUES
+(1, 'CZ', 'Ostrava', 'Modrá', '154', '74128');
+
 CREATE TABLE `customer` (
   `id` int(11) NOT NULL,
   `id_address` int(11) NOT NULL,
@@ -16,6 +19,13 @@ CREATE TABLE `customer` (
   `email` varchar(40) COLLATE utf8_czech_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
+INSERT INTO `customer` (`id`, `id_address`, `firstName`, `surname`, `telephoneNumber`, `email`) VALUES
+(1, 1, 'Petr', 'Èervený', '741589647', 'petr@sez.cz'),
+(2, 1, 'Tomáš', 'Velký', '5525', 'fgfg@sez.cz'),
+(3, 1, 'Pepa', 'Zelený', '5525', 'fgfg@sez.cz'),
+(4, 1, 'Pepa', 'Zelený', '5525', 'fgfg@sez.cz'),
+(5, 1, 'Pepa', 'Zelený', '5525', 'fgfg@sez.cz'),
+(6, 1, 'Pepa', 'Zelený', '5525', 'fgfg@sez.cz');
 
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
@@ -30,32 +40,36 @@ CREATE TABLE `orders` (
   `note` text COLLATE utf8_czech_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
+INSERT INTO `orders` (`id`, `id_customer`, `registration_plate`, `type_of_car`, `date_of_fulfillment`, `year_of_production`, `car_service`, `tire_service`, `other_service`, `note`) VALUES
+(1, 1, '56a9876', 'Sedan', '2021-02-26 15:22:39', 2015, 1, 0, 0, 'Poznámka');
 
- ALTER TABLE `address`
-  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `address`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
 
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`),
   ADD KEY `customer_address_id_fk` (`id_address`);
 
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`),
   ADD KEY `orders_customer_id_fk` (`id_customer`);
 
-
 ALTER TABLE `address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 
 ALTER TABLE `customer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 ALTER TABLE `customer`
   ADD CONSTRAINT `customer_address_id_fk` FOREIGN KEY (`id_address`) REFERENCES `address` (`id`);
-
 
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_customer_id_fk` FOREIGN KEY (`id_customer`) REFERENCES `customer` (`id`);
