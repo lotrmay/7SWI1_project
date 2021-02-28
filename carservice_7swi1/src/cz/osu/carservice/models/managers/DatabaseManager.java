@@ -13,15 +13,14 @@ public class DatabaseManager {
         this.database = new Database();
     }
 
-
-    public String testSelect(){
+    public String testSelect(int id){
         String test="";
 
         try{
             this.database.openConnection();
             Statement statement = this.database.getConnection().createStatement();
 
-            String sql = "SELECT * FROM `customer` WHERE 1 LIMIT 1";
+            String sql = "SELECT * FROM `customer` WHERE `id` LIKE "+ id + " LIMIT 1";
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()){

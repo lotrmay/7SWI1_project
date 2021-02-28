@@ -74,10 +74,10 @@ public class MainFormController {
     }
     @FXML
     private void showOrderForm(ActionEvent event){
-        System.out.println(databaseManager.testSelect());
+        System.out.println(databaseManager.testSelect(2));
     }
     @FXML
     private void showOrderListForm(ActionEvent event){
-        databaseManager.testInsert("Pepa","Zelený");
+        databaseManager.testInsert("Pepa","Červený");
     }
 }
