@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff; -fx-background-radius: 30 30 30 30;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.osu.carservice.controllers.EditFormController">
+    <children>
+        <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" maxWidth="Infinity" prefHeight="100.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="5.0">
+            <children>
+                <HBox maxHeight="1.7976931348623157E308" maxWidth="200.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <ImageView fx:id="backBtn" fitHeight="50.0" fitWidth="80.0" onMouseClicked="#returnToMainScene" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/mainImages/back_btn.png" />
+                            </image>
+                            <viewport>
+                                <Rectangle2D />
+                            </viewport>
+                            <HBox.margin>
+                                <Insets right="15.0" top="25.0" />
+                            </HBox.margin>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </ImageView>
+                    </children>
+                </HBox>
+                <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Změnit objednávku">
+                            <font>
+                                <Font name="System Bold" size="30.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+                <HBox alignment="TOP_RIGHT" maxWidth="200.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <ImageView fx:id="closeBtn" fitHeight="50.0" fitWidth="80.0" onMouseClicked="#closeApplication" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/mainImages/close_btn.png" />
+                            </image>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                            <HBox.margin>
+                                <Insets top="25.0" />
+                            </HBox.margin>
+                        </ImageView>
+                    </children>
+                </HBox>
+            </children>
+        </HBox>
+        <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="105.0">
+            <left>
+                <VBox minWidth="150.0" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Button fx:id="carServisBtn" mnemonicParsing="false" style="-fx-background-color: #ffffff; -fx-border-color: #000000; -fx-border-radius: 60; -fx-background-radius: 60;">
+                            <graphic>
+                                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                    <center>
+                                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                            <image>
+                                                <Image url="@../images/orderForm/autoservis.png" />
+                                            </image>
+                                        </ImageView>
+                                    </center>
+                                    <bottom>
+                                        <Label text="Autoservis" BorderPane.alignment="CENTER">
+                                            <font>
+                                                <Font name="System Bold" size="12.0" />
+                                            </font>
+                                            <opaqueInsets>
+                                                <Insets />
+                                            </opaqueInsets>
+                                        </Label>
+                                    </bottom>
+                                </BorderPane>
+                            </graphic>
+                            <VBox.margin>
+                                <Insets bottom="10.0" />
+                            </VBox.margin>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </Button>
+                        <Button fx:id="pneuServisBtn" mnemonicParsing="false" style="-fx-border-color: #000000; -fx-background-color: #ffffff; -fx-background-radius: 60; -fx-border-radius: 60;">
+                            <graphic>
+                                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                    <center>
+                                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                            <image>
+                                                <Image url="@../images/orderForm/pneuservis.png" />
+                                            </image>
+                                        </ImageView>
+                                    </center>
+                                    <bottom>
+                                        <Label text="Pneuservis" BorderPane.alignment="CENTER">
+                                            <font>
+                                                <Font name="System Bold" size="12.0" />
+                                            </font>
+                                        </Label>
+                                    </bottom>
+                                </BorderPane>
+                            </graphic>
+                            <VBox.margin>
+                                <Insets bottom="10.0" />
+                            </VBox.margin>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </Button>
+                        <Button fx:id="otherServicesBtn" mnemonicParsing="false" style="-fx-border-color: #000000; -fx-background-color: #ffffff; -fx-background-radius: 60; -fx-border-radius: 60;">
+                            <graphic>
+                                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                    <center>
+                                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                            <image>
+                                                <Image url="@../images/orderForm/otherservices.png" />
+                                            </image>
+                                        </ImageView>
+                                    </center>
+                                    <bottom>
+                                        <Label text="Ostatní služby" BorderPane.alignment="CENTER">
+                                            <font>
+                                                <Font name="System Bold" size="12.0" />
+                                            </font>
+                                        </Label>
+                                    </bottom>
+                                </BorderPane>
+                            </graphic>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </Button>
+                    </children>
+                </VBox>
+            </left>
+            <center>
+                <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <HBox prefHeight="250.0">
+                            <children>
+                                <VBox prefHeight="200.0" prefWidth="180.0">
+                                    <children>
+                                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                            <children>
+                                                <Label text="SPZ vozu">
+                                                    <font>
+                                                        <Font name="System Bold" size="12.0" />
+                                                    </font>
+                                                </Label>
+                                                <TextField fx:id="carPlateTF" />
+                                            </children>
+                                        </VBox>
+                                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                            <children>
+                                                <Label text="Typ vozu">
+                                                    <font>
+                                                        <Font name="System Bold" size="12.0" />
+                                                    </font></Label>
+                                                <TextField fx:id="carTypeTF" />
+                                            </children>
+                                        </VBox>
+                                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                            <children>
+                                                <Label text="Rok výroby">
+                                                    <font>
+                                                        <Font name="System Bold" size="12.0" />
+                                                    </font>
+                                                </Label>
+                                                <TextField fx:id="carYearOfProductionTF" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                                <VBox prefHeight="200.0" prefWidth="400.0">
+                                    <children>
+                                        <HBox prefHeight="150.0" prefWidth="200.0">
+                                            <children>
+                                                <VBox prefHeight="200.0" prefWidth="200.0">
+                                                    <children>
+                                                        <VBox alignment="BOTTOM_LEFT" prefHeight="85.0" prefWidth="100.0">
+                                                            <children>
+                                                                <Label text="Datum">
+                                                                    <font>
+                                                                        <Font name="System Bold" size="12.0" />
+                                                                    </font>
+                                                                </Label>
+                                                                <DatePicker fx:id="dateOfFulfillmentDT" />
+                                                            </children>
+                                                            <opaqueInsets>
+                                                                <Insets />
+                                                            </opaqueInsets>
+                                                        </VBox>
+                                                        <VBox alignment="BOTTOM_LEFT" prefHeight="110.0" prefWidth="200.0">
+                                                            <children>
+                                                                <Label text="Čas">
+                                                                    <font>
+                                                                        <Font name="System Bold" size="12.0" />
+                                                                    </font>
+                                                                </Label>
+                                                                <ComboBox fx:id="timeOfFulfillmentCB">
+                                                                    <VBox.margin>
+                                                                        <Insets bottom="5.0" />
+                                                                    </VBox.margin>
+                                                                </ComboBox>
+                                                            </children>
+                                                            <opaqueInsets>
+                                                                <Insets left="15.0" />
+                                                            </opaqueInsets>
+                                                        </VBox>
+                                                    </children>
+                                                    <opaqueInsets>
+                                                        <Insets left="15.0" />
+                                                    </opaqueInsets>
+                                                </VBox>
+                                                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                                    <center>
+                                                        <Button fx:id="createOrderBtn" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #668cff; -fx-background-radius: 50; -fx-border-radius: 50; -fx-border-color: #002699;" text="Změnit" BorderPane.alignment="CENTER">
+                                                            <font>
+                                                                <Font name="System Bold" size="18.0" />
+                                                            </font>
+                                                            <cursor>
+                                                                <Cursor fx:constant="HAND" />
+                                                            </cursor>
+                                                        </Button>
+                                                    </center>
+                                                </BorderPane>
+                                            </children>
+                                            <VBox.margin>
+                                                <Insets left="15.0" />
+                                            </VBox.margin>
+                                        </HBox>
+                                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                            <children>
+                                                <Label alignment="CENTER" text="Error Message" />
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                            <VBox.margin>
+                                <Insets />
+                            </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="250.0" prefWidth="200.0" style="-fx-background-color: #ffeb69; -fx-background-radius: 50; -fx-border-radius: 50; -fx-border-color: #ffdc69; -fx-border-width: 2;">
+                            <children>
+                                <BorderPane>
+                                    <left>
+                                        <VBox prefHeight="200.0" prefWidth="180.0" BorderPane.alignment="CENTER">
+                                            <children>
+                                                <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                                    <children>
+                                                        <Label text="Jméno">
+                                                            <font>
+                                                                <Font name="System Bold" size="12.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <TextField fx:id="nameTF" />
+                                                    </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                                    <children>
+                                                        <Label text="Příjmení">
+                                                            <font>
+                                                                <Font name="System Bold" size="12.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <TextField fx:id="surnameTF" />
+                                                    </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                                    <children>
+                                                        <Label text="Telefon">
+                                                            <font>
+                                                                <Font name="System Bold" size="12.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <TextField fx:id="phoneTF" />
+                                                    </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                                    <children>
+                                                        <Label text="Email">
+                                                            <font>
+                                                                <Font name="System Bold" size="12.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <TextField fx:id="emailTF" />
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                            <BorderPane.margin>
+                                                <Insets right="15.0" />
+                                            </BorderPane.margin>
+                                        </VBox>
+                                    </left>
+                                    <center>
+                                        <VBox prefHeight="200.0" prefWidth="180.0" BorderPane.alignment="CENTER">
+                                            <children>
+                                                <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                                    <children>
+                                                        <Label text="Stát">
+                                                            <font>
+                                                                <Font name="System Bold" size="12.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <ComboBox fx:id="countryCB" prefWidth="150.0" />
+                                                    </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                                    <children>
+                                                        <Label text="Město">
+                                                            <font>
+                                                                <Font name="System Bold" size="12.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <TextField fx:id="cityTF" />
+                                                    </children>
+                                                </VBox>
+                                                <VBox prefHeight="200.0" prefWidth="100.0">
+                                                    <children>
+                                                        <Label text="Ulice a č.p.">
+                                                            <font>
+                                                                <Font name="System Bold" size="12.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <HBox prefHeight="100.0" prefWidth="200.0">
+                                                            <children>
+                                                                <TextField fx:id="streetTF" />
+                                                                <TextField fx:id="streetNumberTF" />
+                                                            </children>
+                                                        </HBox>
+                                                    </children>
+                                                    <opaqueInsets>
+                                                        <Insets />
+                                                    </opaqueInsets>
+                                                </VBox>
+                                                <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                                    <children>
+                                                        <Label text="PSČ">
+                                                            <font>
+                                                                <Font name="System Bold" size="12.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <TextField fx:id="postcodeTF" />
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                            <BorderPane.margin>
+                                                <Insets right="15.0" />
+                                            </BorderPane.margin>
+                                        </VBox>
+                                    </center>
+                                    <right>
+                                        <VBox prefHeight="200.0" prefWidth="180.0" BorderPane.alignment="CENTER">
+                                            <children>
+                                                <Label text="Poznámka">
+                                                    <font>
+                                                        <Font name="System Bold" size="12.0" />
+                                                    </font>
+                                                </Label>
+                                                <TextArea fx:id="noteTA" prefHeight="200.0" prefWidth="200.0" />
+                                            </children>
+                                        </VBox>
+                                    </right>
+                                    <HBox.margin>
+                                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                    </HBox.margin>
+                                </BorderPane>
+                            </children></HBox>
+                    </children>
+                    <BorderPane.margin>
+                        <Insets left="25.0" />
+                    </BorderPane.margin>
+                </VBox>
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>

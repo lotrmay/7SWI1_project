@@ -1,5 +1,6 @@
 package cz.osu.carservice;
 
+import cz.osu.carservice.models.utils.DragWindowUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,22 +11,10 @@ import javafx.stage.StageStyle;
 
 public class Main extends Application {
 
-    private double x = 0;
-    private double y = 0;
-
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("forms/mainForm.fxml"));
-
-        root.setOnMousePressed(e -> {
-            x = e.getSceneX();
-            y = e.getSceneY();
-        });
-
-        root.setOnMouseDragged(e -> {
-            primaryStage.setX(e.getScreenX() - x);
-            primaryStage.setY(e.getScreenY() - y);
-        });
+        DragWindowUtils.moveWindow(root,primaryStage);
 
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);

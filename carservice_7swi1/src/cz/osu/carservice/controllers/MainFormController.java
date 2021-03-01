@@ -1,33 +1,26 @@
 package cz.osu.carservice.controllers;
 
 import cz.osu.carservice.models.managers.DatabaseManager;
+import cz.osu.carservice.models.utils.DragWindowUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+
 import java.awt.*;
+import java.io.IOException;
 import java.net.URI;
 
-public class MainFormController {
-    //region ElementsVariable
-    @FXML
-    public ImageView closeBtn;
-    @FXML
-    public ImageView facebookBtn;
-    @FXML
-    public ImageView instagramBtn;
-    @FXML
-    public ImageView twitterBtn;
-    @FXML
-    public Button createOrderBtn;
-    @FXML
-    public Button orderListBtn;
-    @FXML
-    public Label helpBtn;
-    //endregion
+public class MainFormController{
 
     private final DatabaseManager databaseManager;
 
@@ -74,10 +67,24 @@ public class MainFormController {
     }
     @FXML
     private void showOrderForm(ActionEvent event){
-        System.out.println(databaseManager.testSelect(2));
+        try {
+            Parent home_page = FXMLLoader.load(getClass().getResource("../forms/createForm.fxml"));
+            Stage app = (Stage)((Node) event.getSource()).getScene().getWindow();
+
+            DragWindowUtils.moveWindow(home_page,app);
+
+            Scene scene = new Scene(home_page);
+            scene.setFill(Color.TRANSPARENT);
+
+            app.setScene(scene);
+            app.show();
+        } catch (IOException e) {
+            System.err.println("Došlo k chybě při načítání formuláře createForm!");
+            System.err.println(e.getMessage());
+        }
     }
     @FXML
     private void showOrderListForm(ActionEvent event){
-        databaseManager.testInsert("Pepa","Červený");
+
     }
 }

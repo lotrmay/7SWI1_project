@@ -5,9 +5,10 @@ import cz.osu.carservice.models.mySQL.Database;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class DatabaseManager {
-    private Database database;
+    private final Database database;
 
     public DatabaseManager() {
         this.database = new Database();
@@ -37,19 +38,20 @@ public class DatabaseManager {
         return test;
     }
 
-    public void testInsert(String name,String surname) {
+    public void insertIntoDatabase(String sql, ArrayList<String> data) {
         try {
             this.database.openConnection();
 
-            PreparedStatement insertCommand = this.database.getConnection()
-                    .prepareStatement(
-                            "INSERT INTO `customer` (`id`, `id_address`, `firstName`, `surname`, `telephoneNumber`, `email`) VALUES (NULL, '1', ?, ?, '5525', 'fgfg@sez.cz'); ");
-            insertCommand.setString(1, name);
-            insertCommand.setString(2, surname);
+            PreparedStatement insertCommand = this.database.getConnection().prepareStatement(sql);
+
+            for (int x = 1;x<=data.size();x++) {
+                insertCommand.setString(x, data.get(x-1));
+            }
+
             insertCommand.executeUpdate();
 
         } catch (Exception e) {
-            System.err.println("Got an exception!");
+            System.err.println("Got an SQL insert exception!");
             System.err.println(e.getMessage());
         }finally {
             this.database.closeConnection();

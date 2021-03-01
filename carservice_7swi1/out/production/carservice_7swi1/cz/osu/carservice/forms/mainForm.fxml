@@ -8,13 +8,14 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-radius: 30 30 30 30; -fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.osu.carservice.controllers.MainFormController">
    <children>
-      <HBox maxWidth="Infinity" prefHeight="100.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="15.0">
+      <HBox maxWidth="Infinity" prefHeight="100.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="5.0">
          <children>
             <HBox maxHeight="1.7976931348623157E308" maxWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
@@ -85,17 +86,53 @@
             </HBox>
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutX="15.0" layoutY="115.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="115.0">
+      <HBox alignment="CENTER" layoutX="15.0" layoutY="115.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="105.0">
          <children>
-            <Button fx:id="createOrderBtn" minHeight="250.0" minWidth="250.0" mnemonicParsing="false" onAction="#showOrderForm" text="createOrder">
+            <Button fx:id="createOrderBtn" minHeight="250.0" minWidth="250.0" mnemonicParsing="false" onAction="#showOrderForm" style="-fx-background-color: #ffd996; -fx-border-color: #ffb636; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-width: 2;">
                <HBox.margin>
                   <Insets right="50.0" />
                </HBox.margin>
+               <graphic>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                           <image>
+                              <Image url="@../images/mainForm/create_order.png" />
+                           </image>
+                        </ImageView>
+                     </center>
+                     <bottom>
+                        <Label text="Vytvořit objednávku" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                     </bottom>
+                  </BorderPane>
+               </graphic>
             </Button>
-            <Button fx:id="orderListBtn" minHeight="250.0" minWidth="250.0" mnemonicParsing="false" onAction="#showOrderListForm" text="getListOfOrders">
+            <Button fx:id="orderListBtn" minHeight="250.0" minWidth="250.0" mnemonicParsing="false" onAction="#showOrderListForm" style="-fx-background-color: #ffd996; -fx-border-color: #ffb636; -fx-border-width: 2; -fx-background-radius: 15; -fx-border-radius: 15;">
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
+               <graphic>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                           <image>
+                              <Image url="@../images/mainForm/order_list.png" />
+                           </image>
+                        </ImageView>
+                     </center>
+                     <bottom>
+                        <Label text="Výpis objednávek" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                     </bottom>
+                  </BorderPane>
+               </graphic>
             </Button>
          </children>
       </HBox>
