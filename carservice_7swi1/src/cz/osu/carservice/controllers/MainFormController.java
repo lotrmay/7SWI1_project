@@ -85,6 +85,20 @@ public class MainFormController{
     }
     @FXML
     private void showOrderListForm(ActionEvent event){
+        try {
+            Parent home_page = FXMLLoader.load(getClass().getResource("../forms/orderListForm.fxml"));
+            Stage app = (Stage)((Node) event.getSource()).getScene().getWindow();
 
+            DragWindowUtils.moveWindow(home_page,app);
+
+            Scene scene = new Scene(home_page);
+            scene.setFill(Color.TRANSPARENT);
+
+            app.setScene(scene);
+            app.show();
+        } catch (IOException e) {
+            System.err.println("Došlo k chybě při načítání formuláře orderListForm!");
+            System.err.println(e.getMessage());
+        }
     }
 }

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff; -fx-background-radius: 30 30 30 30;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.osu.carservice.controllers.OrderListFormController">
+   <children>
+      <HBox alignment="CENTER" layoutX="20.0" layoutY="20.0" maxWidth="Infinity" prefHeight="100.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="5.0">
+         <children>
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="200.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <ImageView fx:id="backBtn" fitHeight="50.0" fitWidth="80.0" onMouseClicked="#returnToMainScene" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/mainImages/back_btn.png" />
+                     </image>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
+                     <HBox.margin>
+                        <Insets right="15.0" top="25.0" />
+                     </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </HBox>
+            <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Výpis objednávek">
+                     <font>
+                        <Font name="System Bold" size="30.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <HBox alignment="TOP_RIGHT" maxWidth="200.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <ImageView fx:id="closeBtn" fitHeight="50.0" fitWidth="80.0" onMouseClicked="#closeApplication" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/mainImages/close_btn.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <HBox.margin>
+                        <Insets top="25.0" />
+                     </HBox.margin>
+                  </ImageView>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <VBox layoutX="10.0" layoutY="10.0" prefHeight="395.0" prefWidth="730.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="115.0">
+         <children>
+            <HBox prefHeight="32.0" prefWidth="530.0">
+               <children>
+                  <ImageView fitHeight="28.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/orderListForm/loupe.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="5.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <TextField>
+                     <HBox.margin>
+                        <Insets left="25.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <ComboBox prefHeight="25.0" prefWidth="50.0">
+                     <HBox.margin>
+                        <Insets left="25.0" />
+                     </HBox.margin>
+                  </ComboBox>
+               </children>
+            </HBox>
+            <TableView fx:id="viewOrdersTbv" prefHeight="358.0" prefWidth="730.0" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="orderIDColumn" text="ID" />
+                  <TableColumn fx:id="dateColumn" prefWidth="75.0" text="Datum" />
+                  <TableColumn fx:id="timeColumn" prefWidth="75.0" text="Čas" />
+                  <TableColumn fx:id="registrationPlateColumn" prefWidth="75.0" text="SPZ vozu" />
+                  <TableColumn fx:id="carTypeColumn" prefWidth="75.0" text="Typ vozu" />
+                  <TableColumn fx:id="productionYearColumn" prefWidth="75.0" text="Rok výroby" />
+                  <TableColumn fx:id="customerNameColumn" prefWidth="75.0" text="Jméno" />
+                  <TableColumn fx:id="customerSurnameColumn" prefWidth="75.0" text="Příjmení" />
+                  <TableColumn fx:id="telephoneColumn" prefWidth="75.0" text="Telefon" />
+                  <TableColumn fx:id="emailColumn" prefWidth="75.0" text="E-mail" />
+                  <TableColumn fx:id="stateColumn" prefWidth="75.0" text="Stát" />
+                  <TableColumn fx:id="cityColumn" prefWidth="75.0" text="Město" />
+                  <TableColumn fx:id="streetColumn" prefWidth="75.0" text="Ulice" />
+                  <TableColumn fx:id="streetNumberColumn" prefWidth="75.0" text="Č.p." />
+                  <TableColumn fx:id="zipCodeColumn" prefWidth="75.0" text="PSČ" />
+                  <TableColumn fx:id="noteColumn" prefWidth="75.0" text="Poznámka" />
+                  <TableColumn fx:id="detailColumn" prefWidth="75.0" text="Detail" />
+                  <TableColumn fx:id="editColumn" prefWidth="75.0" text="Upravit" />
+                  <TableColumn fx:id="deleteColumn" prefWidth="75.0" text="Smazat" />
+               </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
