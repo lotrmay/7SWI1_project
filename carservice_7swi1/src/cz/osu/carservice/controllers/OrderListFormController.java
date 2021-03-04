@@ -1,36 +1,25 @@
 package cz.osu.carservice.controllers;
 
-import cz.osu.carservice.models.managers.DatabaseManager;
-import cz.osu.carservice.models.utils.DragWindowUtils;
-import javafx.application.Platform;
+import cz.osu.carservice.controllers.mainController.MainController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import javafx.util.Callback;
-
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class OrderListFormController implements Initializable {
+public class OrderListFormController extends MainController implements Initializable {
     @FXML
     private TableView viewOrdersTbv;
     @FXML
     private TableColumn<Map, Object> orderIDColumn;
-
     @FXML
     private TableColumn<Map,Object> dateColumn;
     @FXML
@@ -68,40 +57,19 @@ public class OrderListFormController implements Initializable {
     @FXML
     private TableColumn deleteColumn;
 
-
-    private final DatabaseManager databaseManager;
-
-    public OrderListFormController() {
-        databaseManager = new DatabaseManager();
-    }
-
     @FXML
     private void returnToMainScene(MouseEvent event){
-        try {
-            Parent home_page = FXMLLoader.load(getClass().getResource("../forms/mainForm.fxml"));
-            Stage app = (Stage)((Node) event.getSource()).getScene().getWindow();
-
-            DragWindowUtils.moveWindow(home_page,app);
-
-            Scene scene = new Scene(home_page);
-            scene.setFill(Color.TRANSPARENT);
-
-            app.setScene(scene);
-            app.show();
-        } catch (IOException e) {
-            System.err.println("Došlo k chybě při načítání formuláře mainForm!");
-            System.err.println(e.getMessage());
-        }
+        super.setNewFormScene("mainForm",event);
     }
     @FXML
     private void closeApplication(MouseEvent event){
-        Platform.exit();
-        System.exit(0);
+        super.closeApplication();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<Map<String, Object>> oList = FXCollections.<Map<String, Object>>observableArrayList();
+        //TODO chybí tam typy servisu -pneuservis,autoservis,otherservis
         ArrayList<Map<String, Object>> items = databaseManager.selectFromDatabase("SELECT `orders`.`id`,`customer`.`firstName`,`customer`.`surname`,`customer`.`telephoneNumber`,`customer`.`email`,`orders`.`note`,`orders`.`date_of_fulfillment`,`orders`.`registration_plate`,`orders`.`type_of_car`,`orders`.`year_of_production`,`address`.`state`,`address`.`city`,`address`.`street`,`address`.`street_number`,`address`.`post_code` FROM `orders` JOIN customer on orders.id_customer = customer.id JOIN address on customer.id_address = address.id WHERE 1");
         orderIDColumn.setCellValueFactory(new MapValueFactory<>("id"));
         customerNameColumn.setCellValueFactory(new MapValueFactory<>("firstName"));

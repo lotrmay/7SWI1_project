@@ -8,5 +8,7 @@
     <SOURCES>
       <root url="file://$PROJECT_DIR$/src/cz/osu/carservice/lib/javafx-sdk-15.0.1/lib" />
     </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/src/cz/osu/carservice/lib/javafx-sdk-15.0.1/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/src/cz/osu/carservice/lib/javafx-sdk-15.0.1/lib" recursive="false" type="SOURCES" />
   </library>
 </component>

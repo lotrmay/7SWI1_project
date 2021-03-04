@@ -164,7 +164,10 @@
                                           <Font name="System Bold" size="12.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="carPlateTF" />
+                                    <TextField fx:id="carPlateTF">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets></TextField>
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
@@ -255,8 +258,11 @@
                         </VBox>
                      </children>
                      <VBox.margin>
-                        <Insets />
+                        <Insets left="25.0" right="25.0" />
                      </VBox.margin>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
                   </HBox>
                   <HBox prefHeight="250.0" prefWidth="200.0" style="-fx-background-color: #ffeb69; -fx-background-radius: 50; -fx-border-radius: 50; -fx-border-color: #ffdc69; -fx-border-width: 2;">
                      <children>
@@ -339,6 +345,9 @@
                                              <font>
                                                 <Font name="System Bold" size="12.0" />
                                              </font>
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
                                           </Label>
                                           <HBox prefHeight="100.0" prefWidth="200.0">
                                              <children>

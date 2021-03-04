@@ -1,21 +1,11 @@
 package cz.osu.carservice.controllers;
 
-import cz.osu.carservice.models.managers.DatabaseManager;
-import cz.osu.carservice.models.utils.DragWindowUtils;
-import javafx.application.Platform;
+import cz.osu.carservice.controllers.mainController.MainController;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class CreateFormController implements Initializable {
+public class CreateFormController extends MainController implements Initializable {
     //region ElementsVariable
     @FXML
     private TextField carPlateTF;
@@ -58,12 +48,6 @@ public class CreateFormController implements Initializable {
     private TextArea noteTA;
     //endregion
 
-    private final DatabaseManager databaseManager;
-
-    public CreateFormController() {
-        databaseManager = new DatabaseManager();
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         List<String> strings = new ArrayList<>();
@@ -82,27 +66,12 @@ public class CreateFormController implements Initializable {
 
     @FXML
     private void closeApplication(MouseEvent event){
-        Platform.exit();
-        System.exit(0);
+        super.closeApplication();
     }
 
     @FXML
     private void returnToMainScene(MouseEvent event){
-        try {
-            Parent home_page = FXMLLoader.load(getClass().getResource("../forms/mainForm.fxml"));
-            Stage app = (Stage)((Node) event.getSource()).getScene().getWindow();
-
-            DragWindowUtils.moveWindow(home_page,app);
-
-            Scene scene = new Scene(home_page);
-            scene.setFill(Color.TRANSPARENT);
-
-            app.setScene(scene);
-            app.show();
-        } catch (IOException e) {
-            System.err.println("Došlo k chybě při načítání formuláře mainForm!");
-            System.err.println(e.getMessage());
-        }
+      super.setNewFormScene("mainForm",event);
     }
 
     @FXML
