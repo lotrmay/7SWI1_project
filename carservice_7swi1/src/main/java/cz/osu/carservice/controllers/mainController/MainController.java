@@ -1,6 +1,5 @@
 package cz.osu.carservice.controllers.mainController;
 
-import cz.osu.carservice.models.managers.DatabaseManager;
 import cz.osu.carservice.models.utils.DragWindowUtils;
 import javafx.application.Platform;
 import javafx.event.Event;
@@ -11,19 +10,17 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.io.IOException;
 
 public class MainController {
 
-    protected final DatabaseManager databaseManager;
-
-    protected MainController() {
-        databaseManager = new DatabaseManager();
-    }
+    protected static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence.createEntityManagerFactory("MySQL");
 
     protected final void setNewFormScene(String form, Event event) {
         try {
-            Parent home_page = FXMLLoader.load(getClass().getResource("../forms/"+ form +".fxml"));
+            Parent home_page = FXMLLoader.load(getClass().getResource("/forms/"+ form +".fxml"));
             Stage app = (Stage)((Node) event.getSource()).getScene().getWindow();
 
             DragWindowUtils.moveWindow(home_page,app);
@@ -40,6 +37,7 @@ public class MainController {
     }
 
     protected final void closeApplication(){
+        ENTITY_MANAGER_FACTORY.close();
         Platform.exit();
         System.exit(0);
     }

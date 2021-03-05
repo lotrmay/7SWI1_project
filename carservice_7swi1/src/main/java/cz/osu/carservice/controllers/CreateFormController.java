@@ -1,17 +1,17 @@
 package cz.osu.carservice.controllers;
 
 import cz.osu.carservice.controllers.mainController.MainController;
-import javafx.collections.FXCollections;
+import cz.osu.carservice.models.entities.RegistrationTime;
+import cz.osu.carservice.models.entities.States;
+import cz.osu.carservice.models.enums.Services;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+
+import javax.persistence.*;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class CreateFormController extends MainController implements Initializable {
@@ -33,6 +33,8 @@ public class CreateFormController extends MainController implements Initializabl
     @FXML
     private TextField phoneTF;
     @FXML
+    private TextField phoneCodeTF;
+    @FXML
     private TextField emailTF;
     @FXML
     private ComboBox<String> countryCB;
@@ -46,104 +48,146 @@ public class CreateFormController extends MainController implements Initializabl
     private TextField postcodeTF;
     @FXML
     private TextArea noteTA;
+    @FXML
+    private Button carServisBtn;
+    @FXML
+    private Button pneuServisBtn;
+    @FXML
+    private Button otherServicesBtn;
+    //endregion
+
+    //region Type of Services
+    private int carServis;
+    private int pneuServis;
+    private int otherServices;
+    //endregion
+
+    //region Style constants
+    private static final String HEX_COLOR_WHITE = "#ffffff";
+    private static final String HEX_COLOR_BLACK = "#000000";
+    private static final String HEX_COLOR_GREEN = "#8cff66";
+    private static final String BORDER_RADIUS = "60";
+    private static final String BACKGROUND_RADIUS = "60";
     //endregion
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        List<String> strings = new ArrayList<>();
-        strings.add("CZ");
-        strings.add("SK");
-        countryCB.setItems(FXCollections.observableArrayList(strings));
-        countryCB.getSelectionModel().selectFirst();
 
-        List<String> times = new ArrayList<>();
-        times.add("13:00:00");
-        times.add("14:00:00");
-        times.add("15:00:00");
-        timeOfFulfillmentCB.setItems(FXCollections.observableArrayList(times));
-        timeOfFulfillmentCB.getSelectionModel().selectFirst();
+        //region configuration of services buttons
+        this.carServis = 0;
+        this.pneuServis = 0;
+        this.otherServices = 0;
+
+        this.carServisBtn.setUserData(Services.CAR_SERVICES);
+        this.pneuServisBtn.setUserData(Services.TIRE_SERVICES);
+        this.otherServicesBtn.setUserData(Services.OTHER_SERVICES);
+        //endregion
+
+        EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        try {
+            List<States> statesNames = entityManager.createNamedQuery("States.findAll", States.class)
+                    .getResultList();
+            List<RegistrationTime> registrationTimes = entityManager.createNamedQuery("RegistrationTimes.findAll", RegistrationTime.class)
+                    .getResultList();
+
+            statesNames.forEach(param -> {
+                countryCB.getItems().add(param.getState_short());
+            });
+            registrationTimes.forEach(param -> {
+                timeOfFulfillmentCB.getItems().add(String.valueOf(param.getTime()));
+            });
+
+            phoneCodeTF.setText(statesNames.get(0).getTelephone_code());
+            timeOfFulfillmentCB.getSelectionModel().select(0);
+            countryCB.getSelectionModel().select(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
     }
 
     @FXML
-    private void closeApplication(MouseEvent event){
+    private void onChangeItem() {
+        EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        try {
+            States statesPhoneCode = entityManager.createNamedQuery("States.findByShortCut", States.class)
+                    .setParameter("state_shortcut", countryCB.getSelectionModel().getSelectedItem())
+                    .getSingleResult();
+            phoneCodeTF.setText(statesPhoneCode.getTelephone_code());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    @FXML
+    private void onClickValidateServicesBtn(MouseEvent event) {
+        Button btn = (Button) event.getSource();
+        Services service = (Services) ((Button) event.getSource()).getUserData();
+
+        switch (service) {
+            case CAR_SERVICES -> {
+                this.carServis = (this.carServis == 0) ? 1 : 0;
+                switch (this.carServis) {
+                    case 0 -> setServiceBtnWhite(btn);
+
+                    case 1 -> setServiceBtnGreen(btn);
+                }
+            }
+            case TIRE_SERVICES -> {
+                this.pneuServis = (this.pneuServis == 0) ? 1 : 0;
+                switch (this.pneuServis) {
+                    case 0 -> setServiceBtnWhite(btn);
+
+                    case 1 -> setServiceBtnGreen(btn);
+                }
+            }
+            case OTHER_SERVICES -> {
+                this.otherServices = (this.otherServices == 0) ? 1 : 0;
+                switch (this.otherServices) {
+                    case 0 -> setServiceBtnWhite(btn);
+
+                    case 1 -> setServiceBtnGreen(btn);
+                }
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + service);
+        }
+    }
+
+    @FXML
+    private void closeApplication(MouseEvent event) {
         super.closeApplication();
     }
 
     @FXML
-    private void returnToMainScene(MouseEvent event){
-      super.setNewFormScene("mainForm",event);
+    private void returnToMainScene(MouseEvent event) {
+        super.setNewFormScene("mainForm", event);
     }
 
     @FXML
-    private void insertOrder(MouseEvent event){
+    private void insertOrder(MouseEvent event) {
+        //TODO Column/SIZE anotace...
+
         //TODO validation
 
         //TODO check if records exists
-
-        insertIntoAddress();
-        insertIntoCustomer(1);
-        insertIntoOrders(1);
     }
 
-    private void insertIntoCustomer(int idAddress){
-        String sqlInsertCustomer = "INSERT INTO `customer` " +
-                "(`id`, `id_address`, `firstName`, `surname`, `telephoneNumber`, `email`) " +
-                "VALUES (NULL, ?, ?, ?, ?, ?); ";
-
-        ArrayList<String> data = new ArrayList<>();
-
-        data.add(String.valueOf(idAddress));
-        data.add(nameTF.getText());
-        data.add(surnameTF.getText());
-        data.add(phoneTF.getText());
-        data.add(emailTF.getText());
-
-        databaseManager.insertIntoDatabase(sqlInsertCustomer,data);
+    private void setServiceBtnGreen(Button btn) {
+        btn.setStyle(String.format("-fx-background-color: %s;" +
+                        "-fx-border-color: %s;" +
+                        "-fx-border-radius: %s;" +
+                        "-fx-background-radius: %s;",
+                HEX_COLOR_GREEN, HEX_COLOR_BLACK, BORDER_RADIUS, BACKGROUND_RADIUS));
     }
 
-    private void insertIntoAddress(){
-        String sqlInsertCustomer = "INSERT INTO `address` " +
-                "(`id`, `state`, `city`, `street`, `street_number`, `post_code`) " +
-                "VALUES (NULL, ?, ?, ?, ?, ?); ";
-
-        ArrayList<String> data = new ArrayList<>();
-
-        data.add(String.valueOf(countryCB.getValue()));
-        data.add(cityTF.getText());
-        data.add(streetTF.getText());
-        data.add(streetNumberTF.getText());
-        data.add(postcodeTF.getText());
-
-        databaseManager.insertIntoDatabase(sqlInsertCustomer,data);
-    }
-
-    private void insertIntoOrders(int idCustomer) {
-
-        String sqlInsertCustomer = "INSERT INTO `orders` " +
-                "(`id`, `id_customer`, `registration_plate`, `type_of_car`, `date_of_fulfillment`, `year_of_production`, `car_service`, `tire_service`, `other_service`, `note`) " +
-                "VALUES (NULL, ?, ?, ?, ?, ?,?,?,?,?); ";
-
-        try {
-            ArrayList<String> data = new ArrayList<>();
-
-            SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
-            String dateTime = ft.format(ft.parse(Objects.requireNonNull(this.dateOfFulfillmentDT.getValue()).toString()))+ " " +timeOfFulfillmentCB.getValue();
-
-            data.add(String.valueOf(idCustomer));
-            data.add(carPlateTF.getText());
-            data.add(carTypeTF.getText());
-            data.add(dateTime);
-            data.add(carYearOfProductionTF.getText());
-            data.add("1");
-            data.add("1");
-            data.add("1");
-            data.add(noteTA.getText());
-
-            databaseManager.insertIntoDatabase(sqlInsertCustomer,data);
-        } catch (ParseException e) {
-            System.err.println("Došlo k chybě při převodu datumu!");
-            System.err.println(e.getMessage());
-        }
-
+    private void setServiceBtnWhite(Button btn) {
+        btn.setStyle(String.format("-fx-background-color: %s;" +
+                        "-fx-border-color: %s;" +
+                        "-fx-border-radius: %s;" +
+                        "-fx-background-radius: %s;",
+                HEX_COLOR_WHITE, HEX_COLOR_BLACK, BORDER_RADIUS, BACKGROUND_RADIUS));
     }
 }

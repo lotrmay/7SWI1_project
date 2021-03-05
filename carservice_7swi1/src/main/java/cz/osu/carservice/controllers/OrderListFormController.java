@@ -68,6 +68,7 @@ public class OrderListFormController extends MainController implements Initializ
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        /*
         ObservableList<Map<String, Object>> oList = FXCollections.<Map<String, Object>>observableArrayList();
         //TODO chybí tam typy servisu -pneuservis,autoservis,otherservis
         ArrayList<Map<String, Object>> items = databaseManager.selectFromDatabase("SELECT `orders`.`id`,`customer`.`firstName`,`customer`.`surname`,`customer`.`telephoneNumber`,`customer`.`email`,`orders`.`note`,`orders`.`date_of_fulfillment`,`orders`.`registration_plate`,`orders`.`type_of_car`,`orders`.`year_of_production`,`address`.`state`,`address`.`city`,`address`.`street`,`address`.`street_number`,`address`.`post_code` FROM `orders` JOIN customer on orders.id_customer = customer.id JOIN address on customer.id_address = address.id WHERE 1");
@@ -129,6 +130,6 @@ public class OrderListFormController extends MainController implements Initializ
 
 
 
-
+*/
     }
 }
