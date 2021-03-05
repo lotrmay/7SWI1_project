@@ -1,14 +1,11 @@
 CREATE TABLE `address` (
   `id` int(11) NOT NULL,
-  `state` enum('CZ','SK','PL','AT','DE') COLLATE utf8_czech_ci NOT NULL,
+  `id_state` int(11) NOT NULL,
   `city` varchar(30) COLLATE utf8_czech_ci NOT NULL,
   `street` varchar(20) COLLATE utf8_czech_ci NOT NULL,
   `street_number` varchar(15) COLLATE utf8_czech_ci NOT NULL,
   `post_code` varchar(15) COLLATE utf8_czech_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
-
-INSERT INTO `address` (`id`, `state`, `city`, `street`, `street_number`, `post_code`) VALUES
-(1, 'CZ', 'Ostrava', 'Modrá', '154', '74128');
 
 CREATE TABLE `customer` (
   `id` int(11) NOT NULL,
@@ -19,34 +16,51 @@ CREATE TABLE `customer` (
   `email` varchar(40) COLLATE utf8_czech_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
-INSERT INTO `customer` (`id`, `id_address`, `firstName`, `surname`, `telephoneNumber`, `email`) VALUES
-(1, 1, 'Petr', 'Èervený', '741589647', 'petr@sez.cz'),
-(2, 1, 'Tomáš', 'Velký', '5525', 'fgfg@sez.cz'),
-(3, 1, 'Pepa', 'Zelený', '5525', 'fgfg@sez.cz'),
-(4, 1, 'Pepa', 'Zelený', '5525', 'fgfg@sez.cz'),
-(5, 1, 'Pepa', 'Zelený', '5525', 'fgfg@sez.cz'),
-(6, 1, 'Pepa', 'Zelený', '5525', 'fgfg@sez.cz');
-
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `id_customer` int(11) NOT NULL,
+  `id_time` int(11) NOT NULL,
   `registration_plate` varchar(8) COLLATE utf8_czech_ci NOT NULL,
   `type_of_car` varchar(30) COLLATE utf8_czech_ci NOT NULL,
-  `date_of_fulfillment` datetime NOT NULL,
+  `date_of_fulfillment` date NOT NULL,
   `year_of_production` year(4) NOT NULL,
-  `car_service` tinyint(1) NOT NULL DEFAULT 0,
-  `tire_service` tinyint(1) NOT NULL DEFAULT 0,
-  `other_service` tinyint(1) NOT NULL DEFAULT 0,
-  `note` text COLLATE utf8_czech_ci DEFAULT NULL
+  `car_service` tinyint(1) NOT NULL DEFAULT '0',
+  `tire_service` tinyint(1) NOT NULL DEFAULT '0',
+  `other_service` tinyint(1) NOT NULL DEFAULT '0',
+  `note` text COLLATE utf8_czech_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
-INSERT INTO `orders` (`id`, `id_customer`, `registration_plate`, `type_of_car`, `date_of_fulfillment`, `year_of_production`, `car_service`, `tire_service`, `other_service`, `note`) VALUES
-(1, 1, '56a9876', 'Sedan', '2021-02-26 15:22:39', 2015, 1, 0, 0, 'Poznámka');
+CREATE TABLE `registration_times` (
+  `id` int(11) NOT NULL,
+  `time_of_registration` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_czech_ci;
 
+INSERT INTO `registration_times` (`id`, `time_of_registration`) VALUES
+(2, '08:00:00'),
+(3, '09:00:00'),
+(4, '10:00:00'),
+(5, '11:00:00'),
+(6, '12:00:00'),
+(7, '13:00:00'),
+(8, '14:00:00'),
+(9, '15:00:00');
+
+CREATE TABLE `states` (
+  `id` int(11) NOT NULL,
+  `state_short` varchar(3) COLLATE utf8mb4_czech_ci NOT NULL,
+  `state_full` varchar(50) COLLATE utf8mb4_czech_ci NOT NULL,
+  `telephone_code` varchar(5) COLLATE utf8mb4_czech_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_czech_ci;
+
+
+INSERT INTO `states` (`id`, `state_short`, `state_full`, `telephone_code`) VALUES
+(1, 'CZ', 'Czech Republic', '+420'),
+(2, 'SK', 'Slovak Republic', '+421');
 
 ALTER TABLE `address`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
+  ADD UNIQUE KEY `id` (`id`),
+  ADD KEY `id_state` (`id_state`);
 
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`id`),
@@ -56,20 +70,49 @@ ALTER TABLE `customer`
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`),
-  ADD KEY `orders_customer_id_fk` (`id_customer`);
+  ADD KEY `orders_customer_id_fk` (`id_customer`),
+  ADD KEY `id_time` (`id_time`);
+
+ALTER TABLE `registration_times`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `states`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
 
 ALTER TABLE `address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 ALTER TABLE `customer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+ALTER TABLE `registration_times`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+ALTER TABLE `states`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+ALTER TABLE `address`
+  ADD CONSTRAINT `address_ibfk_1` FOREIGN KEY (`id_state`) REFERENCES `states` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE `customer`
   ADD CONSTRAINT `customer_address_id_fk` FOREIGN KEY (`id_address`) REFERENCES `address` (`id`);
 
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_customer_id_fk` FOREIGN KEY (`id_customer`) REFERENCES `customer` (`id`);
+  ADD CONSTRAINT `orders_customer_id_fk` FOREIGN KEY (`id_customer`) REFERENCES `customer` (`id`),
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`id_time`) REFERENCES `registration_times` (`id`);
+
+
+
+
+
+
+
+
+
+
+
+
