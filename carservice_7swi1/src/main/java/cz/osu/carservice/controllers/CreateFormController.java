@@ -1,11 +1,10 @@
 package cz.osu.carservice.controllers;
 
 import cz.osu.carservice.controllers.mainController.MainController;
-import cz.osu.carservice.models.entities.Address;
-import cz.osu.carservice.models.entities.Order;
-import cz.osu.carservice.models.entities.RegistrationTime;
-import cz.osu.carservice.models.entities.State;
+import cz.osu.carservice.models.entities.*;
 import cz.osu.carservice.models.enums.Services;
+import cz.osu.carservice.models.utils.ConversionUtils;
+import cz.osu.carservice.models.utils.DatabaseUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -13,6 +12,8 @@ import javafx.scene.input.MouseEvent;
 
 import javax.persistence.*;
 import java.net.URL;
+import java.sql.Time;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -56,6 +57,8 @@ public class CreateFormController extends MainController implements Initializabl
     private Button pneuServisBtn;
     @FXML
     private Button otherServicesBtn;
+    @FXML
+    private Label messageLBL;
     //endregion
 
     //region Type of Services
@@ -68,12 +71,19 @@ public class CreateFormController extends MainController implements Initializabl
     private static final String HEX_COLOR_WHITE = "#ffffff";
     private static final String HEX_COLOR_BLACK = "#000000";
     private static final String HEX_COLOR_GREEN = "#8cff66";
+    private static final String HEX_COLOR_RED = "#f55d42";
     private static final String BORDER_RADIUS = "60";
     private static final String BACKGROUND_RADIUS = "60";
     //endregion
 
+    //region Variables Collections
+    private List<State> states;
+    private List<RegistrationTime> registrationTimes;
+    private EntityManager entityManager;
+    //endregion
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        messageLBL.setText("");
 
         //region configuration of services buttons
         this.carServis = 0;
@@ -85,21 +95,21 @@ public class CreateFormController extends MainController implements Initializabl
         this.otherServicesBtn.setUserData(Services.OTHER_SERVICES);
         //endregion
 
-        EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
         try {
-            List<State> stateNames = entityManager.createNamedQuery("State.findAll", State.class)
+            states = entityManager.createNamedQuery("State.findAll", State.class)
                     .getResultList();
-            List<RegistrationTime> registrationTimes = entityManager.createNamedQuery("RegistrationTime.findAll", RegistrationTime.class)
+            registrationTimes = entityManager.createNamedQuery("RegistrationTime.findAll", RegistrationTime.class)
                     .getResultList();
 
-            stateNames.forEach(param -> {
+            states.forEach(param -> {
                 countryCB.getItems().add(param.getState_short());
             });
             registrationTimes.forEach(param -> {
                 timeOfFulfillmentCB.getItems().add(String.valueOf(param.getTime()));
             });
 
-            phoneCodeTF.setText(stateNames.get(0).getTelephone_code());
+            phoneCodeTF.setText(states.get(0).getTelephone_code());
             timeOfFulfillmentCB.getSelectionModel().select(0);
             countryCB.getSelectionModel().select(0);
         } catch (Exception e) {
@@ -111,7 +121,7 @@ public class CreateFormController extends MainController implements Initializabl
 
     @FXML
     private void onChangeItem() {
-        EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
         try {
             State statePhoneCode = entityManager.createNamedQuery("State.findByShortCut", State.class)
                     .setParameter("state_shortcut", countryCB.getSelectionModel().getSelectedItem())
@@ -170,12 +180,49 @@ public class CreateFormController extends MainController implements Initializabl
 
     @FXML
     private void insertOrder(MouseEvent event) {
+        //TODO Validace ostatních dat
 
-        //TODO databáze změna unique
+        //region getDataFromTextFields
+        String city = cityTF.getText();
+        String street = streetTF.getText();
+        String streetNumber = streetNumberTF.getText();
+        String postCode = postcodeTF.getText();
 
-        //TODO validation
+        String name = nameTF.getText();
+        String surname = surnameTF.getText();
+        String phone = phoneTF.getText();
+        String email = emailTF.getText();
 
-        //TODO check if records exists
+        String carType = carTypeTF.getText();
+        String carPlate = carPlateTF.getText();
+        int carYearOfProduction = Integer.parseInt(carYearOfProductionTF.getText());
+        LocalDate dateOfFulfillment = dateOfFulfillmentDT.getValue();
+        String note = noteTA.getText();
+        //endregion
+        
+        Time time = ConversionUtils.getTimeFromString(timeOfFulfillmentCB.getValue());
+
+        entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        RegistrationTime timeForRegistration = null;
+        try {
+            timeForRegistration = DatabaseUtils.getRegistrationTimeForOrder(entityManager,time);
+            Order order = DatabaseUtils.checkIfRegistrationTimeIsReserved(entityManager,timeForRegistration,dateOfFulfillmentDT.getValue());
+
+            messageLBL.setText("Termín je zabrán objednávkou č. " + order.getId());
+            messageLBL.setStyle(String.format("-fx-text-fill: %s;", HEX_COLOR_RED));
+        }catch (NoResultException exception){
+            Address address = DatabaseUtils.getAddressForCustomer(entityManager,city,street,streetNumber,postCode,countryCB.getValue());
+            Customer customer = DatabaseUtils.getCustomerForOrder(entityManager,name,surname,phone,email,address);
+            DatabaseUtils.insertOrder(entityManager,carType,carPlate,carYearOfProduction,dateOfFulfillment,note,carServis,pneuServis,otherServices,customer,timeForRegistration);
+
+            messageLBL.setText("Objednávka byla úspěšně zaregistrována !");
+            messageLBL.setStyle(String.format("-fx-text-fill: %s;", HEX_COLOR_GREEN));
+        }catch (Exception exception){
+            System.err.println(exception.getMessage());
+        }finally {
+            entityManager.close();
+        }
+
     }
 
     private void setServiceBtnGreen(Button btn) {

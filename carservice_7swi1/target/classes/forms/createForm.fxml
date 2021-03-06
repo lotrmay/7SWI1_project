@@ -251,7 +251,10 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label alignment="CENTER" text="Error Message" />
+                                    <Label fx:id="messageLBL" alignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font></Label>
                                  </children>
                               </HBox>
                            </children>

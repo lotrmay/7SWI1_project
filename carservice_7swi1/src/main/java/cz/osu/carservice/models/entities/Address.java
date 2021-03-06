@@ -7,7 +7,13 @@ import java.util.Set;
 @Entity
 @Table(name = "address")
 @NamedQueries({
-        @NamedQuery(name = "Address.findAll", query = "SELECT c FROM Address c")})
+        @NamedQuery(name = "Address.findAll", query = "SELECT c FROM Address c"),
+        @NamedQuery(name = "Address.checkIfAddressExist", query = "SELECT c FROM Address c WHERE " +
+                "c.city = :city and " +
+                "c.street = :street and " +
+                "c.streetNumber = :street_number and " +
+                "c.state = :state and " +
+                "c.postCode = :post_code")})
 public class Address implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -91,6 +97,14 @@ public class Address implements Serializable {
 
 
     public Address() {
+    }
+
+    public Address(String city, String street, String streetNumber, String postCode, State state) {
+        this.city = city;
+        this.street = street;
+        this.streetNumber = streetNumber;
+        this.postCode = postCode;
+        this.state = state;
     }
 
     @Override

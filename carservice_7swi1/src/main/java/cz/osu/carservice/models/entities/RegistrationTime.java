@@ -8,7 +8,8 @@ import java.util.Set;
 @Entity
 @Table(name = "registration_times")
 @NamedQueries({
-        @NamedQuery(name = "RegistrationTime.findAll", query = "SELECT c FROM RegistrationTime c") })
+        @NamedQuery(name = "RegistrationTime.findAll", query = "SELECT c FROM RegistrationTime c"),
+        @NamedQuery(name = "RegistrationTime.findByTime", query = "SELECT c FROM RegistrationTime c WHERE c.time = :time")})
 public class RegistrationTime implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

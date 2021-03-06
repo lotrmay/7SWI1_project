@@ -6,6 +6,12 @@ import java.util.Set;
 
 @Entity
 @Table(name = "customer")
+@NamedQueries({
+        @NamedQuery(name = "Customer.checkIfCustomerExists", query = "SELECT c FROM Customer c WHERE " +
+                "c.firstName = :first_name and " +
+                "c.surname = :surname and " +
+                "c.telephoneNumber = :telephone_number and " +
+                "c.email = :email")})
 public class Customer implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -32,6 +38,14 @@ public class Customer implements Serializable {
     private Set<Order> orders;
 
     public Customer() {
+    }
+
+    public Customer(String firstName, String surname, String telephoneNumber, String email, Address address) {
+        this.firstName = firstName;
+        this.surname = surname;
+        this.telephoneNumber = telephoneNumber;
+        this.email = email;
+        this.address = address;
     }
 
     public long getId() {
