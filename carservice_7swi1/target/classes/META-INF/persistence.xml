@@ -5,8 +5,12 @@
 
     <persistence-unit name="MySQL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>cz.osu.carservice.models.entities.States</class>
+
+        <class>cz.osu.carservice.models.entities.State</class>
         <class>cz.osu.carservice.models.entities.RegistrationTime</class>
+        <class>cz.osu.carservice.models.entities.Address</class>
+        <class>cz.osu.carservice.models.entities.Customer</class>
+        <class>cz.osu.carservice.models.entities.Order</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />

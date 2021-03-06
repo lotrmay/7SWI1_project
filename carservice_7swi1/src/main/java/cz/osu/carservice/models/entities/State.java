@@ -2,26 +2,30 @@ package cz.osu.carservice.models.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "states")
 @NamedQueries({
-        @NamedQuery(name = "States.findAll", query = "SELECT c FROM States c"),
-        @NamedQuery(name = "States.findByShortCut", query = "SELECT c FROM States c WHERE c.state_short = :state_shortcut")})
-public class States implements Serializable {
+        @NamedQuery(name = "State.findAll", query = "SELECT c FROM State c"),
+        @NamedQuery(name = "State.findByShortCut", query = "SELECT c FROM State c WHERE c.state_short = :state_shortcut")})
+public class State implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id",unique=true,nullable = false)
     private long id;
 
-    @Column(name = "state_short")
+    @Column(name = "state_short",nullable = false,length = 3)
     private String state_short;
 
-    @Column(name = "state_full")
+    @Column(name = "state_full",nullable = false,length = 50)
     private String state_full;
 
-    @Column(name = "telephone_code")
+    @Column(name = "telephone_code",nullable = false,length = 5)
     private String telephone_code;
+
+    @OneToMany(mappedBy = "state",cascade=CascadeType.PERSIST)
+    private Set<Address> addresses;
 
     public long getId() {
         return id;
@@ -55,7 +59,7 @@ public class States implements Serializable {
         this.telephone_code = telephone_code;
     }
 
-    public States() {
+    public State() {
     }
 
     @Override

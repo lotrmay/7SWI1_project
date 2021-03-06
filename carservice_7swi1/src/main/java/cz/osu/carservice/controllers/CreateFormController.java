@@ -1,8 +1,10 @@
 package cz.osu.carservice.controllers;
 
 import cz.osu.carservice.controllers.mainController.MainController;
+import cz.osu.carservice.models.entities.Address;
+import cz.osu.carservice.models.entities.Order;
 import cz.osu.carservice.models.entities.RegistrationTime;
-import cz.osu.carservice.models.entities.States;
+import cz.osu.carservice.models.entities.State;
 import cz.osu.carservice.models.enums.Services;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -85,19 +87,19 @@ public class CreateFormController extends MainController implements Initializabl
 
         EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
         try {
-            List<States> statesNames = entityManager.createNamedQuery("States.findAll", States.class)
+            List<State> stateNames = entityManager.createNamedQuery("State.findAll", State.class)
                     .getResultList();
-            List<RegistrationTime> registrationTimes = entityManager.createNamedQuery("RegistrationTimes.findAll", RegistrationTime.class)
+            List<RegistrationTime> registrationTimes = entityManager.createNamedQuery("RegistrationTime.findAll", RegistrationTime.class)
                     .getResultList();
 
-            statesNames.forEach(param -> {
+            stateNames.forEach(param -> {
                 countryCB.getItems().add(param.getState_short());
             });
             registrationTimes.forEach(param -> {
                 timeOfFulfillmentCB.getItems().add(String.valueOf(param.getTime()));
             });
 
-            phoneCodeTF.setText(statesNames.get(0).getTelephone_code());
+            phoneCodeTF.setText(stateNames.get(0).getTelephone_code());
             timeOfFulfillmentCB.getSelectionModel().select(0);
             countryCB.getSelectionModel().select(0);
         } catch (Exception e) {
@@ -111,10 +113,10 @@ public class CreateFormController extends MainController implements Initializabl
     private void onChangeItem() {
         EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
         try {
-            States statesPhoneCode = entityManager.createNamedQuery("States.findByShortCut", States.class)
+            State statePhoneCode = entityManager.createNamedQuery("State.findByShortCut", State.class)
                     .setParameter("state_shortcut", countryCB.getSelectionModel().getSelectedItem())
                     .getSingleResult();
-            phoneCodeTF.setText(statesPhoneCode.getTelephone_code());
+            phoneCodeTF.setText(statePhoneCode.getTelephone_code());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -168,7 +170,8 @@ public class CreateFormController extends MainController implements Initializabl
 
     @FXML
     private void insertOrder(MouseEvent event) {
-        //TODO Column/SIZE anotace...
+
+        //TODO databáze změna unique
 
         //TODO validation
 
