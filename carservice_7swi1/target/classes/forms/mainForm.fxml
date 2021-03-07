@@ -110,6 +110,9 @@
                      </bottom>
                   </BorderPane>
                </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
             <Button fx:id="orderListBtn" minHeight="250.0" minWidth="250.0" mnemonicParsing="false" onAction="#showOrderListForm" style="-fx-background-color: #ffd996; -fx-border-color: #ffb636; -fx-border-width: 2; -fx-background-radius: 15; -fx-border-radius: 15;">
                <HBox.margin>
@@ -133,6 +136,9 @@
                      </bottom>
                   </BorderPane>
                </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
          </children>
       </HBox>

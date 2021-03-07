@@ -76,11 +76,8 @@ public class CreateFormController extends MainController implements Initializabl
     private static final String BACKGROUND_RADIUS = "60";
     //endregion
 
-    //region Variables Collections
-    private List<State> states;
-    private List<RegistrationTime> registrationTimes;
     private EntityManager entityManager;
-    //endregion
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         messageLBL.setText("");
@@ -97,9 +94,9 @@ public class CreateFormController extends MainController implements Initializabl
 
         entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
         try {
-            states = entityManager.createNamedQuery("State.findAll", State.class)
+            List<State> states = entityManager.createNamedQuery("State.findAll", State.class)
                     .getResultList();
-            registrationTimes = entityManager.createNamedQuery("RegistrationTime.findAll", RegistrationTime.class)
+            List<RegistrationTime> registrationTimes = entityManager.createNamedQuery("RegistrationTime.findAll", RegistrationTime.class)
                     .getResultList();
 
             states.forEach(param -> {
