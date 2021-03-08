@@ -47,7 +47,7 @@ public class MainFormController extends MainController {
     }
     @FXML
     private void showOrderForm(ActionEvent event){
-        super.setNewFormScene("createForm",event);
+        super.setNewFormScene("warningWindow",event);
     }
     @FXML
     private void showOrderListForm(ActionEvent event){

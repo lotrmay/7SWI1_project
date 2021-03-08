@@ -115,7 +115,6 @@ public class OrderListFormController extends MainController implements Initializ
                             Order order = viewOrdersTbv.getItems().get(this.getTableRow().getIndex());
                             System.out.println("selectedData: " + order.getId());
                         });
-
                         btn.setStyle(String.format("-fx-background-color: %s;", buttonColor));
                         btn.setCursor(Cursor.HAND);
                     }

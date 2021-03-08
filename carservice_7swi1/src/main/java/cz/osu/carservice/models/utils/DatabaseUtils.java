@@ -108,5 +108,7 @@ public class DatabaseUtils {
 
         return address;
     }
+    public static void removeOrder(int id){
 
+    }
 }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="205.0" prefWidth="400.0" style="-fx-background-color: #ffffff; -fx-background-radius: 30 30 30 30;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.osu.carservice.controllers.WarningWindowController">
+   <children>
+      <VBox layoutX="-7.0" layoutY="5.0" prefHeight="200.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="105.0" prefWidth="400.0" text="Opravdu si přejete smazat vybranou objednávku?" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
+            <BorderPane prefHeight="100.0" prefWidth="400.0">
+               <right>
+                  <Button fx:id="cancelBtn" mnemonicParsing="false" onMouseClicked="#returnToOrderListForm" prefHeight="0.0" prefWidth="100.0" style="-fx-background-color: #ff5c5c; -fx-border-color: #fa0707;" text="Ne" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </right>
+               <left>
+                  <Button fx:id="confirmBtn" mnemonicParsing="false" onMouseClicked="#deleteOrder" prefHeight="0.0" prefWidth="100.0" style="-fx-background-color: #84fa88; -fx-border-color: #14ff1c;" text="Ano" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <BorderPane.margin>
+                        <Insets />
+                     </BorderPane.margin>
+                  </Button>
+               </left>
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" />
+               </VBox.margin>
+            </BorderPane>
+         </children></VBox>
+   </children>
+</AnchorPane>
