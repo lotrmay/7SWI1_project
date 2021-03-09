@@ -99,24 +99,36 @@ public class OrderListFormController extends MainController implements Initializ
             entityManager.close();
         }
 
-        setButtonsToColumn(detailColumn,"Detail",HEX_COLOR_GREEN);
-        setButtonsToColumn(editColumn,"Edit",HEX_COLOR_BLUE);
-        setButtonsToColumn(deleteColumn,"Delete",HEX_COLOR_RED);
+        setButtonsToColumn(detailColumn,"Detail","showForm",HEX_COLOR_GREEN,"cz.osu.carservice.controllers.ShowFormController");
+        setButtonsToColumn(editColumn,"Edit","editForm",HEX_COLOR_BLUE,"cz.osu.carservice.controllers.EditFormController");
+        setButtonsToColumn(deleteColumn,"Delete","warningForm",HEX_COLOR_RED,"cz.osu.carservice.controllers.WarningFormController");
+
+        dateColumn.setSortType(TableColumn.SortType.ASCENDING);
+        viewOrdersTbv.getSortOrder().add(dateColumn);
+        viewOrdersTbv.sort();
     }
 
-    private void setButtonsToColumn(TableColumn<String,Void> column,String nameOfButton,String buttonColor){
+    private void setButtonsToColumn(TableColumn<String,Void> column,String nameOfButton,String formToRun,String buttonColor,String className){
         column.setCellFactory(new Callback<>() {
             @Override
             public TableCell<String, Void> call(final TableColumn<String, Void> param) {
                 final TableCell<String, Void> cell = new TableCell<>() {
                     private final Button btn = new Button(nameOfButton);
                     {
+
                         btn.setOnAction((ActionEvent event) -> {
                             Order order = viewOrdersTbv.getItems().get(this.getTableRow().getIndex());
-                            System.out.println("selectedData: " + order.getId());
+                            OrderListFormController.super.setNewFormScene(formToRun,order,event);
                         });
+
                         btn.setStyle(String.format("-fx-background-color: %s;", buttonColor));
                         btn.setCursor(Cursor.HAND);
+
+                        try {
+                            btn.setUserData(Class.forName(className));
+                        } catch (ClassNotFoundException exception) {
+                            exception.printStackTrace();
+                        }
                     }
 
                     @Override

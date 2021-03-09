@@ -71,20 +71,6 @@ public class DatabaseUtils {
 
         return customer;
     }
-
-    public static void insertOrder(EntityManager entityManager,String carType, String carPlate, int carYearOfProduction,LocalDate dateOfFulfilment, String note,int carServis,int pneuServis, int otherServices, Customer customer, RegistrationTime time){
-
-        try {
-            Order order = new Order(carPlate,carType,dateOfFulfilment,carYearOfProduction,carServis,pneuServis,otherServices,note,customer,time);
-
-            entityManager.getTransaction().begin();
-            entityManager.persist(order);
-            entityManager.getTransaction().commit();
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static Address getAddressForCustomer(EntityManager entityManager, String city,String street,String streetNumber,String postCode, String countryShortcut){
         State state = null;
         Address address = null;
@@ -107,8 +93,5 @@ public class DatabaseUtils {
         }
 
         return address;
-    }
-    public static void removeOrder(int id){
-
     }
 }

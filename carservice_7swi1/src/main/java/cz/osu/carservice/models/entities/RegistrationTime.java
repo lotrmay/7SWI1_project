@@ -19,7 +19,7 @@ public class RegistrationTime implements Serializable {
     @Column(name = "time_of_registration",nullable = false)
     private Time time;
 
-    @OneToMany(mappedBy = "time",cascade=CascadeType.PERSIST)
+    @OneToMany(mappedBy = "time",cascade = CascadeType.PERSIST)
     private Set<Order> orders;
 
     public long getId() {

@@ -34,7 +34,7 @@ public class Customer implements Serializable {
     @JoinColumn(name = "id_address")
     private Address address;
 
-    @OneToMany(mappedBy = "customer",cascade=CascadeType.PERSIST)
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.PERSIST)
     private Set<Order> orders;
 
     public Customer() {

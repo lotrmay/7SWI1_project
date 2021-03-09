@@ -3,8 +3,7 @@ package cz.osu.carservice.controllers;
 import cz.osu.carservice.controllers.mainController.MainController;
 import cz.osu.carservice.models.entities.*;
 import cz.osu.carservice.models.enums.Services;
-import cz.osu.carservice.models.utils.ConversionUtils;
-import cz.osu.carservice.models.utils.DatabaseUtils;
+import cz.osu.carservice.models.utils.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -67,20 +66,12 @@ public class CreateFormController extends MainController implements Initializabl
     private int otherServices;
     //endregion
 
-    //region Style constants
-    private static final String HEX_COLOR_WHITE = "#ffffff";
-    private static final String HEX_COLOR_BLACK = "#000000";
-    private static final String HEX_COLOR_GREEN = "#8cff66";
-    private static final String HEX_COLOR_RED = "#f55d42";
-    private static final String BORDER_RADIUS = "60";
-    private static final String BACKGROUND_RADIUS = "60";
-    //endregion
-
     private EntityManager entityManager;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         messageLBL.setText("");
+        dateOfFulfillmentDT.setValue(LocalDate.now());
 
         //region configuration of services buttons
         this.carServis = 0;
@@ -140,25 +131,25 @@ public class CreateFormController extends MainController implements Initializabl
             case CAR_SERVICES -> {
                 this.carServis = (this.carServis == 0) ? 1 : 0;
                 switch (this.carServis) {
-                    case 0 -> setServiceBtnWhite(btn);
+                    case 0 -> FormUtils.setServiceBtnWhite(btn);
 
-                    case 1 -> setServiceBtnGreen(btn);
+                    case 1 -> FormUtils.setServiceBtnGreen(btn);
                 }
             }
             case TIRE_SERVICES -> {
                 this.pneuServis = (this.pneuServis == 0) ? 1 : 0;
                 switch (this.pneuServis) {
-                    case 0 -> setServiceBtnWhite(btn);
+                    case 0 -> FormUtils.setServiceBtnWhite(btn);
 
-                    case 1 -> setServiceBtnGreen(btn);
+                    case 1 -> FormUtils.setServiceBtnGreen(btn);
                 }
             }
             case OTHER_SERVICES -> {
                 this.otherServices = (this.otherServices == 0) ? 1 : 0;
                 switch (this.otherServices) {
-                    case 0 -> setServiceBtnWhite(btn);
+                    case 0 -> FormUtils.setServiceBtnWhite(btn);
 
-                    case 1 -> setServiceBtnGreen(btn);
+                    case 1 -> FormUtils.setServiceBtnGreen(btn);
                 }
             }
             default -> throw new IllegalStateException("Unexpected value: " + service);
@@ -177,27 +168,39 @@ public class CreateFormController extends MainController implements Initializabl
 
     @FXML
     private void insertOrder(MouseEvent event) {
-        //TODO Validace ostatních dat
 
         //region getDataFromTextFields
-        String city = cityTF.getText();
-        String street = streetTF.getText();
-        String streetNumber = streetNumberTF.getText();
-        String postCode = postcodeTF.getText();
+        String city = TextUtils.firstUpperRestLower(TextUtils.removeAllWhiteSpaces(cityTF.getText()));
+        String street = TextUtils.firstUpperRestLower(TextUtils.removeAllWhiteSpaces(streetTF.getText()));
+        String streetNumber = TextUtils.removeAllWhiteSpaces(streetNumberTF.getText());
+        String postCode = TextUtils.removeAllWhiteSpaces(postcodeTF.getText());
 
-        String name = nameTF.getText();
-        String surname = surnameTF.getText();
-        String phone = phoneTF.getText();
-        String email = emailTF.getText();
+        String name = TextUtils.firstUpperRestLower(TextUtils.removeAllWhiteSpaces(nameTF.getText()));
+        String surname = TextUtils.firstUpperRestLower(TextUtils.removeAllWhiteSpaces(surnameTF.getText()));
+        String phone = TextUtils.removeAllWhiteSpaces(phoneTF.getText());
+        String email = TextUtils.removeAllWhiteSpaces(emailTF.getText());
 
-        String carType = carTypeTF.getText();
-        String carPlate = carPlateTF.getText();
-        int carYearOfProduction = Integer.parseInt(carYearOfProductionTF.getText());
-        LocalDate dateOfFulfillment = dateOfFulfillmentDT.getValue();
-        String note = noteTA.getText();
-        //endregion
-        
+        String carType = TextUtils.firstUpperRestLower(TextUtils.removeAllWhiteSpaces(carTypeTF.getText()));
+        String carPlate = TextUtils.removeAllWhiteSpaces(carPlateTF.getText());
         Time time = ConversionUtils.getTimeFromString(timeOfFulfillmentCB.getValue());
+        String note = noteTA.getText();
+
+        LocalDate dateOfFulfillment = null;
+        int carYearOfProduction = 0;
+        try {
+            carYearOfProduction = Integer.parseInt(TextUtils.removeAllWhiteSpaces(carYearOfProductionTF.getText()));
+            dateOfFulfillment = dateOfFulfillmentDT.getValue();
+        }catch (Exception e){
+            FormUtils.setTextAndRedColorToLabel(messageLBL,"Data jsou ve špatném formátu!");
+            return;
+        }
+        //endregion
+
+        if(!ValidationUtils.checkGrammarRules(messageLBL,carPlate,carType,String.valueOf(carYearOfProduction),
+                dateOfFulfillment,String.valueOf(time),
+                name,surname,phone,email,city,street,streetNumber,postCode,carServis,pneuServis,otherServices))
+            return;
+
 
         entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
         RegistrationTime timeForRegistration = null;
@@ -205,15 +208,13 @@ public class CreateFormController extends MainController implements Initializabl
             timeForRegistration = DatabaseUtils.getRegistrationTimeForOrder(entityManager,time);
             Order order = DatabaseUtils.checkIfRegistrationTimeIsReserved(entityManager,timeForRegistration,dateOfFulfillmentDT.getValue());
 
-            messageLBL.setText("Termín je zabrán objednávkou č. " + order.getId());
-            messageLBL.setStyle(String.format("-fx-text-fill: %s;", HEX_COLOR_RED));
+            FormUtils.setTextAndRedColorToLabel(messageLBL,"Termín je zabrán objednávkou č. " + order.getId());
         }catch (NoResultException exception){
             Address address = DatabaseUtils.getAddressForCustomer(entityManager,city,street,streetNumber,postCode,countryCB.getValue());
             Customer customer = DatabaseUtils.getCustomerForOrder(entityManager,name,surname,phone,email,address);
-            DatabaseUtils.insertOrder(entityManager,carType,carPlate,carYearOfProduction,dateOfFulfillment,note,carServis,pneuServis,otherServices,customer,timeForRegistration);
+            addOrder(entityManager,carType,carPlate,carYearOfProduction,dateOfFulfillment,note,carServis,pneuServis,otherServices,customer,timeForRegistration);
 
-            messageLBL.setText("Objednávka byla úspěšně zaregistrována !");
-            messageLBL.setStyle(String.format("-fx-text-fill: %s;", HEX_COLOR_GREEN));
+            FormUtils.setTextAndGreenColorToLabel(messageLBL,"Objednávka byla úspěšně zaregistrována !");
         }catch (Exception exception){
             System.err.println(exception.getMessage());
         }finally {
@@ -222,19 +223,17 @@ public class CreateFormController extends MainController implements Initializabl
 
     }
 
-    private void setServiceBtnGreen(Button btn) {
-        btn.setStyle(String.format("-fx-background-color: %s;" +
-                        "-fx-border-color: %s;" +
-                        "-fx-border-radius: %s;" +
-                        "-fx-background-radius: %s;",
-                HEX_COLOR_GREEN, HEX_COLOR_BLACK, BORDER_RADIUS, BACKGROUND_RADIUS));
+    private void addOrder(EntityManager entityManager,String carType, String carPlate, int carYearOfProduction,LocalDate dateOfFulfilment, String note,int carServis,int pneuServis, int otherServices, Customer customer, RegistrationTime time){
+
+        try {
+            Order order = new Order(carPlate,carType,dateOfFulfilment,carYearOfProduction,carServis,pneuServis,otherServices,note,customer,time);
+
+            entityManager.getTransaction().begin();
+            entityManager.persist(order);
+            entityManager.getTransaction().commit();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void setServiceBtnWhite(Button btn) {
-        btn.setStyle(String.format("-fx-background-color: %s;" +
-                        "-fx-border-color: %s;" +
-                        "-fx-border-radius: %s;" +
-                        "-fx-background-radius: %s;",
-                HEX_COLOR_WHITE, HEX_COLOR_BLACK, BORDER_RADIUS, BACKGROUND_RADIUS));
-    }
 }
