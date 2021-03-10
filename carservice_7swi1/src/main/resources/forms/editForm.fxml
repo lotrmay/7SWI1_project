@@ -23,7 +23,7 @@
          <children>
             <HBox maxHeight="1.7976931348623157E308" maxWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <ImageView fx:id="backBtn" fitHeight="50.0" fitWidth="80.0" onMouseClicked="#returnToMainScene" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="backBtn" fitHeight="50.0" fitWidth="80.0" onMouseClicked="#returnToOrderList" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/mainImages/back_btn.png" />
                      </image>

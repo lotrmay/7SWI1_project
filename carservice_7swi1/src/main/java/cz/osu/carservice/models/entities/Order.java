@@ -2,13 +2,13 @@ package cz.osu.carservice.models.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "orders")
 @NamedQueries({
         @NamedQuery(name = "Order.findAll", query = "SELECT c FROM Order c"),
+        @NamedQuery(name = "Order.findAllByDate", query = "SELECT c FROM Order c WHERE c.date_of_fulfillment = :dateOfFulfillment"),
         @NamedQuery(name = "Order.checkReservationTime", query = "SELECT c FROM Order c WHERE " +
                 "c.date_of_fulfillment = :dateOfFulfillment and " +
                 "c.time = :time")})

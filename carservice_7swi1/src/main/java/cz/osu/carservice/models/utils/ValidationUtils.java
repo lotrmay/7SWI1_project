@@ -26,7 +26,7 @@ public class ValidationUtils {
             return false;
 
         if (!TextUtils.isValidEmailAddress(email)) {
-            FormUtils.setTextAndRedColorToLabel(infoLbl, "Špatně zadaný email !");
+            FormUtils.setTextAndRedColorToLabel(infoLbl, "Špatně zadaný email!");
             return false;
         }
 
@@ -59,7 +59,7 @@ public class ValidationUtils {
     public static boolean containsEmptyStrings(Label infoLbl, String... strings) {
         for (String text : strings) {
             if (TextUtils.isTextEmpty(text)) {
-                FormUtils.setTextAndRedColorToLabel(infoLbl, "Vyplňte všechny údaje !");
+                FormUtils.setTextAndRedColorToLabel(infoLbl, "Vyplňte všechny údaje!");
                 return true;
             }
         }
@@ -79,7 +79,7 @@ public class ValidationUtils {
     public static boolean containsNumbersOnly(Label infoLbl, String... strings) {
         for (String text : strings) {
             if (!TextUtils.isNumberOnly(text)) {
-                FormUtils.setTextAndRedColorToLabel(infoLbl, "Špatně vyplněné údaje");
+                FormUtils.setTextAndRedColorToLabel(infoLbl, "Špatně vyplněné údaje!");
                 return true;
             }
         }
@@ -106,7 +106,7 @@ public class ValidationUtils {
         LocalDateTime dt = LocalDateTime.of(datePart, timePart);
 
         if (dt.isBefore(LocalDateTime.now())){
-            FormUtils.setTextAndRedColorToLabel(infoLbl, "Špatné datum!");
+            FormUtils.setTextAndRedColorToLabel(infoLbl, "Toto datum a čas již nastalo!");
             return true;
         }
 

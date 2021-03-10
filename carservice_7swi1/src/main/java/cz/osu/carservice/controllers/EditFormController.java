@@ -190,8 +190,8 @@ public class EditFormController extends MainController implements Initializable{
         }
     }
     @FXML
-    private void returnToMainScene(MouseEvent event){
-        super.setNewFormScene("mainForm",event);
+    private void returnToOrderList(MouseEvent event){
+        super.setNewFormScene("orderListForm",event);
     }
     @FXML
     private void closeApplication(MouseEvent event){
