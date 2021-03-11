@@ -94,7 +94,7 @@ public class CreateFormController extends MainController implements Initializabl
                 countryCB.getItems().add(param.getState_short());
             });
             registrationTimes.forEach(param -> {
-                timeOfFulfillmentCB.getItems().add(String.valueOf(param.getTime()));
+                timeOfFulfillmentCB.getItems().add(param.getTime());
             });
 
             phoneCodeTF.setText(states.get(0).getTelephone_code());
@@ -124,6 +124,8 @@ public class CreateFormController extends MainController implements Initializabl
 
     @FXML
     private void onClickValidateServicesBtn(MouseEvent event) {
+        if (event == null) throw new IllegalArgumentException("Parametr event nesmí být null!");
+
         Button btn = (Button) event.getSource();
         Services service = (Services) ((Button) event.getSource()).getUserData();
 
@@ -182,6 +184,7 @@ public class CreateFormController extends MainController implements Initializabl
 
         String carType = TextUtils.firstUpperRestLower(TextUtils.removeAllWhiteSpaces(carTypeTF.getText()));
         String carPlate = TextUtils.removeAllWhiteSpaces(carPlateTF.getText());
+
         Time time = ConversionUtils.getTimeFromString(timeOfFulfillmentCB.getValue());
         String note = noteTA.getText();
 
@@ -212,7 +215,12 @@ public class CreateFormController extends MainController implements Initializabl
         }catch (NoResultException exception){
             Address address = DatabaseUtils.getAddressForCustomer(entityManager,city,street,streetNumber,postCode,countryCB.getValue());
             Customer customer = DatabaseUtils.getCustomerForOrder(entityManager,name,surname,phone,email,address);
-            addOrder(entityManager,carType,carPlate,carYearOfProduction,dateOfFulfillment,note,carServis,pneuServis,otherServices,customer,timeForRegistration);
+
+            Order order = new Order(carPlate,carType,dateOfFulfillment,carYearOfProduction,carServis,pneuServis,otherServices,note,customer,timeForRegistration);
+
+            entityManager.getTransaction().begin();
+            entityManager.persist(order);
+            entityManager.getTransaction().commit();
 
             FormUtils.setTextAndGreenColorToLabel(messageLBL,"Objednávka byla úspěšně zaregistrována !");
         }catch (Exception exception){
@@ -221,19 +229,6 @@ public class CreateFormController extends MainController implements Initializabl
             entityManager.close();
         }
 
-    }
-
-    private void addOrder(EntityManager entityManager,String carType, String carPlate, int carYearOfProduction,LocalDate dateOfFulfilment, String note,int carServis,int pneuServis, int otherServices, Customer customer, RegistrationTime time){
-
-        try {
-            Order order = new Order(carPlate,carType,dateOfFulfilment,carYearOfProduction,carServis,pneuServis,otherServices,note,customer,time);
-
-            entityManager.getTransaction().begin();
-            entityManager.persist(order);
-            entityManager.getTransaction().commit();
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 }

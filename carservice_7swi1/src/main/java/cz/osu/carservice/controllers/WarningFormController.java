@@ -15,6 +15,8 @@ public class WarningFormController extends MainController{
     private EntityManager entityManager;
 
     public void initData(Order order) {
+        if (order == null) throw new IllegalArgumentException("Parametr order nesmí být null!");
+
        this.order = order;
 
         titleLBL.setText("Opravdu si přejete smazat vybranou objednávku č." +order.getId()+" ?");

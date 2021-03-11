@@ -54,25 +54,27 @@ public class ShowFormController extends MainController {
     //endregion
 
     public void initData(Order order) {
+        if (order == null) throw new IllegalArgumentException("Parametr order nesmí být null!");
+
         titleShow.setText("Objednávka číslo " + order.getId());
 
-        setTextAndDisable(carPlateTF,order.getRegistration_plate());
-        setTextAndDisable(carTypeTF,order.getType_of_car());
-        setTextAndDisable(carYearOfProductionTF,String.valueOf(order.getYear_of_production()));
-        setTextAndDisable(nameTF,order.getCustomer().getFirstName());
-        setTextAndDisable(surnameTF,order.getCustomer().getSurname());
-        setTextAndDisable(phoneTF,order.getCustomer().getTelephoneNumber());
-        setTextAndDisable(phoneCodeTF,order.getCustomer().getAddress().getState().getTelephone_code());
-        setTextAndDisable(emailTF,order.getCustomer().getEmail());
-        setTextAndDisable(cityTF,order.getCustomer().getAddress().getCity());
-        setTextAndDisable(streetTF,order.getCustomer().getAddress().getStreet());
-        setTextAndDisable(streetNumberTF,order.getCustomer().getAddress().getStreetNumber());
-        setTextAndDisable(postcodeTF,order.getCustomer().getAddress().getPostCode());
-        setTextAndDisable(noteTA,order.getNote());
+        FormUtils.setTextAndDisable(carPlateTF,order.getRegistration_plate());
+        FormUtils.setTextAndDisable(carTypeTF,order.getType_of_car());
+        FormUtils.setTextAndDisable(carYearOfProductionTF,String.valueOf(order.getYear_of_production()));
+        FormUtils.setTextAndDisable(nameTF,order.getCustomer().getFirstName());
+        FormUtils.setTextAndDisable(surnameTF,order.getCustomer().getSurname());
+        FormUtils.setTextAndDisable(phoneTF,order.getCustomer().getTelephoneNumber());
+        FormUtils.setTextAndDisable(phoneCodeTF,order.getCustomer().getAddress().getState().getTelephone_code());
+        FormUtils.setTextAndDisable(emailTF,order.getCustomer().getEmail());
+        FormUtils.setTextAndDisable(cityTF,order.getCustomer().getAddress().getCity());
+        FormUtils.setTextAndDisable(streetTF,order.getCustomer().getAddress().getStreet());
+        FormUtils.setTextAndDisable(streetNumberTF,order.getCustomer().getAddress().getStreetNumber());
+        FormUtils.setTextAndDisable(postcodeTF,order.getCustomer().getAddress().getPostCode());
+        FormUtils.setTextAndDisable(noteTA,order.getNote());
 
         countryCB.setValue(order.getCustomer().getAddress().getState().getState_short());
         countryCB.setDisable(true);
-        timeOfFulfillmentCB.setValue(order.getTime().getTime().toString());
+        timeOfFulfillmentCB.setValue(order.getTime().getTime());
         timeOfFulfillmentCB.setDisable(true);
         dateOfFulfillmentDT.setValue(order.getDate_of_fulfillment());
         dateOfFulfillmentDT.setDisable(true);
@@ -81,7 +83,6 @@ public class ShowFormController extends MainController {
         if(order.getTire_service() == 1) FormUtils.setServiceBtnGreen(pneuServisBtn);
         if(order.getOther_service() == 1) FormUtils.setServiceBtnGreen(otherServicesBtn);
     }
-
     @FXML
     private void returnToMainScene(MouseEvent event){
        super.setNewFormScene("orderListForm",event);
@@ -89,11 +90,6 @@ public class ShowFormController extends MainController {
     @FXML
     private void closeApplication(MouseEvent event){
         super.closeApplication();
-    }
-
-    private void setTextAndDisable(TextInputControl control,String text){
-        control.setEditable(false);
-        control.setText(text);
     }
 
 }

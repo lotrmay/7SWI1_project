@@ -12,7 +12,6 @@ import javafx.scene.input.MouseEvent;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import java.net.URL;
-import java.security.spec.ECField;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.util.List;
@@ -134,7 +133,7 @@ public class EditFormController extends MainController implements Initializable{
                 countryCB.getItems().add(param.getState_short());
             });
             registrationTimes.forEach(param -> {
-                timeOfFulfillmentCB.getItems().add(String.valueOf(param.getTime()));
+                timeOfFulfillmentCB.getItems().add(param.getTime());
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -158,6 +157,8 @@ public class EditFormController extends MainController implements Initializable{
     }
     @FXML
     private void onClickValidateServicesBtn(MouseEvent event) {
+        if (event == null) throw new IllegalArgumentException("Parametr event nesmí být null!");
+
         Button btn = (Button) event.getSource();
         Services service = (Services) ((Button) event.getSource()).getUserData();
 
@@ -245,6 +246,7 @@ public class EditFormController extends MainController implements Initializable{
         }catch (NoResultException exception){
             Address address = DatabaseUtils.getAddressForCustomer(entityManager,city,street,streetNumber,postCode,countryCB.getValue());
             Customer customer = DatabaseUtils.getCustomerForOrder(entityManager,name,surname,phone,email,address);
+
             orderUpdate(entityManager,carType,carPlate,carYearOfProduction,dateOfFulfillment,note,carServis,pneuServis,otherServices,customer,timeForRegistration);
 
             FormUtils.setTextAndGreenColorToLabel(messageLBL,"Objednávka byla úspěšně změněna !");
@@ -257,6 +259,7 @@ public class EditFormController extends MainController implements Initializable{
     }
 
     private void orderUpdate(EntityManager entityManager, String carType, String carPlate, int carYearOfProduction, LocalDate dateOfFulfillment, String note, int carServis, int pneuServis, int otherServices, Customer customer, RegistrationTime timeForRegistration) {
+        if (entityManager == null) throw new IllegalArgumentException("Parametr entityManager nesmí být null!");
 
         try {
             entityManager.getTransaction().begin();

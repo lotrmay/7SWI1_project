@@ -9,6 +9,9 @@ import java.time.LocalDate;
 
 public class DatabaseUtils {
     public static RegistrationTime getRegistrationTimeForOrder(EntityManager entityManager,Time time){
+        if (entityManager == null) throw new IllegalArgumentException("Parametr entityManager nesmí být null");
+        if (time == null) throw new IllegalArgumentException("Parametr time nesmí být null");
+
         RegistrationTime timeForRegistration = null;
 
         try {
@@ -23,6 +26,8 @@ public class DatabaseUtils {
     }
     public static Address getAddressIfExists(EntityManager entityManager, String city, String street, String streetNumber, String postCode, State state)
             throws NoResultException {
+        if (entityManager == null) throw new IllegalArgumentException("Parametr entityManager nesmí být null");
+
         return entityManager.createNamedQuery("Address.checkIfAddressExist", Address.class)
                 .setParameter("city",city)
                 .setParameter("street",street)
@@ -34,6 +39,8 @@ public class DatabaseUtils {
     }
     public static Customer getCustomerIfExists(EntityManager entityManager, String name, String surname, String telephoneNumber, String email)
             throws NoResultException{
+        if (entityManager == null) throw new IllegalArgumentException("Parametr entityManager nesmí být null");
+
         return entityManager.createNamedQuery("Customer.checkIfCustomerExists", Customer.class)
                 .setParameter("first_name",name)
                 .setParameter("surname",surname)
@@ -44,12 +51,16 @@ public class DatabaseUtils {
     }
     public static Order checkIfRegistrationTimeIsReserved(EntityManager entityManager, RegistrationTime time, LocalDate date)
             throws NoResultException{
+        if (entityManager == null) throw new IllegalArgumentException("Parametr entityManager nesmí být null");
+
         return entityManager.createNamedQuery("Order.checkReservationTime", Order.class)
                 .setParameter("dateOfFulfillment",date)
                 .setParameter("time",time)
                 .getSingleResult();
     }
     public static Customer getCustomerForOrder(EntityManager entityManager,String name,String surname,String telephoneNumber,String email, Address address){
+        if (entityManager == null) throw new IllegalArgumentException("Parametr entityManager nesmí být null");
+
         Customer customer = null;
 
         try {
@@ -72,6 +83,8 @@ public class DatabaseUtils {
         return customer;
     }
     public static Address getAddressForCustomer(EntityManager entityManager, String city,String street,String streetNumber,String postCode, String countryShortcut){
+        if (entityManager == null) throw new IllegalArgumentException("Parametr entityManager nesmí být null");
+
         State state = null;
         Address address = null;
 

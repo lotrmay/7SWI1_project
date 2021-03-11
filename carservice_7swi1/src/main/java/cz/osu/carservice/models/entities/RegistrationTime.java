@@ -1,5 +1,7 @@
 package cz.osu.carservice.models.entities;
 
+import cz.osu.carservice.models.utils.ConversionUtils;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Time;
@@ -30,8 +32,8 @@ public class RegistrationTime implements Serializable {
         this.id = id;
     }
 
-    public Time getTime() {
-        return time;
+    public String getTime() {
+        return ConversionUtils.getStringFromTime(time);
     }
 
     public void setTime(Time time) {

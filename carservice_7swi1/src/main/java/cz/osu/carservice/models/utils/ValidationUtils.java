@@ -12,6 +12,7 @@ public class ValidationUtils {
     public static boolean checkGrammarRules(Label infoLbl, String registrationPlate, String typeOfCar, String yearOfProduction, LocalDate dateOfOrder, String time,
                                             String name, String surname, String telephone, String email,
                                             String city, String street, String streetCode, String postCode, int carService,int tireService, int otherService) {
+        if (infoLbl == null) throw new IllegalArgumentException("Parametr infoLbl nesmí být null!");
 
         if(checkServices(infoLbl,carService,tireService,otherService))
             return false;
@@ -57,6 +58,9 @@ public class ValidationUtils {
     }
 
     public static boolean containsEmptyStrings(Label infoLbl, String... strings) {
+        if (infoLbl == null) throw new IllegalArgumentException("Parametr infoLbl nesmí být null!");
+        if (strings == null) throw new IllegalArgumentException("Parametr strings nesmí být null!");
+
         for (String text : strings) {
             if (TextUtils.isTextEmpty(text)) {
                 FormUtils.setTextAndRedColorToLabel(infoLbl, "Vyplňte všechny údaje!");
@@ -67,6 +71,9 @@ public class ValidationUtils {
     }
 
     public static boolean containsLettersOnly(Label infoLbl, String... strings) {
+        if (infoLbl == null) throw new IllegalArgumentException("Parametr infoLbl nesmí být null!");
+        if (strings == null) throw new IllegalArgumentException("Parametr strings nesmí být null!");
+
         for (String text : strings) {
             if (!TextUtils.isLetterOnly(text)) {
                 FormUtils.setTextAndRedColorToLabel(infoLbl, "Špatně vyplněné údaje!");
@@ -77,6 +84,9 @@ public class ValidationUtils {
     }
 
     public static boolean containsNumbersOnly(Label infoLbl, String... strings) {
+        if (infoLbl == null) throw new IllegalArgumentException("Parametr infoLbl nesmí být null!");
+        if (strings == null) throw new IllegalArgumentException("Parametr strings nesmí být null!");
+
         for (String text : strings) {
             if (!TextUtils.isNumberOnly(text)) {
                 FormUtils.setTextAndRedColorToLabel(infoLbl, "Špatně vyplněné údaje!");
@@ -87,6 +97,8 @@ public class ValidationUtils {
     }
 
     public static boolean checkYear(Label infoLbl, int year) {
+        if (infoLbl == null) throw new IllegalArgumentException("Parametr infoLbl nesmí být null!");
+
         Date date = new Date();
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         int actualYear = localDate.getYear();
@@ -102,6 +114,10 @@ public class ValidationUtils {
     }
 
     public static boolean checkOrderDate(Label infoLbl,LocalDate datePart,String time){
+        if (infoLbl == null) throw new IllegalArgumentException("Parametr infoLbl nesmí být null!");
+        if (datePart == null) throw new IllegalArgumentException("Parametr datePart nesmí být null!");
+        if (TextUtils.isTextEmpty(time)) throw new IllegalArgumentException("Parametr time nesmí být null!");
+
         LocalTime timePart = LocalTime.parse(time);
         LocalDateTime dt = LocalDateTime.of(datePart, timePart);
 
@@ -114,6 +130,9 @@ public class ValidationUtils {
     }
 
     public static boolean checkServices(Label infoLbl,int... services){
+        if (infoLbl == null) throw new IllegalArgumentException("Parametr infoLbl nesmí být null!");
+        if (services == null) throw new IllegalArgumentException("Parametr services nesmí být null!");
+
         for (int item : services) {
             if (item == 1) return false;
         }

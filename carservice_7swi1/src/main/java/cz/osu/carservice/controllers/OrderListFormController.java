@@ -16,13 +16,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
-
 import javax.persistence.EntityManager;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.logging.Filter;
 import java.util.stream.Collectors;
 
 public class OrderListFormController extends MainController implements Initializable {
@@ -40,8 +38,6 @@ public class OrderListFormController extends MainController implements Initializ
     @FXML
     private TableColumn<Order, Integer> productionYearColumn;
     @FXML
-    private TableColumn<Order, String> noteColumn;
-    @FXML
     private TableColumn<Order, String> customerNameColumn;
     @FXML
     private TableColumn<Order, String> customerSurnameColumn;
@@ -50,23 +46,7 @@ public class OrderListFormController extends MainController implements Initializ
     @FXML
     private TableColumn<Order, String> emailColumn;
     @FXML
-    private TableColumn<Order, String> stateColumn;
-    @FXML
-    private TableColumn<Order, String> cityColumn;
-    @FXML
-    private TableColumn<Order, String> streetColumn;
-    @FXML
-    private TableColumn<Order, String> streetNumberColumn;
-    @FXML
-    private TableColumn<Order, String> zipCodeColumn;
-    @FXML
     private TableColumn<Order, String> timeColumn;
-    @FXML
-    private TableColumn<Order, String> carServiceColumn;
-    @FXML
-    private TableColumn<Order, String> tireServiceColumn;
-    @FXML
-    private TableColumn<Order, String> otherServiceColumn;
     @FXML
     private TableColumn<String, Void> detailColumn;
     @FXML
@@ -81,8 +61,6 @@ public class OrderListFormController extends MainController implements Initializ
     private CheckBox dateCheck;
     @FXML
     private ComboBox<String> filterCB;
-    @FXML
-    private Button searchBtn;
     @FXML
     private TextField searchField;
     //endregion
@@ -151,8 +129,10 @@ public class OrderListFormController extends MainController implements Initializ
             } else {
                 orderCollections = FXCollections.observableArrayList(findAllOrders(entityManager));
             }
+            String filterValue = searchField.getText().toLowerCase();
 
-            setDataToColumns(orderCollections);
+            if (TextUtils.isTextEmpty(filterValue)) setDataToColumns(orderCollections);
+            else setDataToColumns(getFilteredOrders(filterValue));
         } catch (Exception e) {
             FormUtils.setTextAndRedColorToLabel(messageLbl, "Špatný formát data!");
         } finally {
@@ -167,65 +147,20 @@ public class OrderListFormController extends MainController implements Initializ
     @FXML
     private void searchOrders() {
         onChangeItem();
-
-        FilterType searchType = Arrays.stream(FilterType.values())
-                .filter(value -> value.getFilterType().equals(filterCB.getSelectionModel().getSelectedItem()))
-                .findFirst()
-                .orElse(null);
-
-        ObservableList<Order> newList = null;
-        String filterValue = searchField.getText().toLowerCase();
-
-        if (TextUtils.isTextEmpty(filterValue)) return;
-
-        switch (Objects.requireNonNull(searchType)) {
-            case ID -> {
-                List<Order> potentialResult = orderCollections.stream().filter(value -> String.valueOf(value.getId()).equals(filterValue)).collect(Collectors.toList());
-                newList = FXCollections.observableArrayList(potentialResult);
-            }
-            case CAR_REGISTRATION_PLATE -> {
-                List<Order> potentialResult = orderCollections.stream().filter(value -> String.valueOf(value.getRegistration_plate()).toLowerCase().equals(filterValue)).collect(Collectors.toList());
-                newList = FXCollections.observableArrayList(potentialResult);
-            }
-            case CUSTOMER_SURNAME -> {
-                List<Order> potentialResult = orderCollections.stream().filter(value -> String.valueOf(value.getCustomer().getSurname()).toLowerCase().equals(filterValue)).collect(Collectors.toList());
-                newList = FXCollections.observableArrayList(potentialResult);
-            }
-            case CAR_YEAR_PRODUCTION -> {
-                List<Order> potentialResult = orderCollections.stream().filter(value -> String.valueOf(value.getYear_of_production()).equals(filterValue)).collect(Collectors.toList());
-                newList = FXCollections.observableArrayList(potentialResult);
-            }
-            case CUSTOMER_NAME -> {
-                List<Order> potentialResult = orderCollections.stream().filter(value -> String.valueOf(value.getCustomer().getFirstName()).toLowerCase().equals(filterValue)).collect(Collectors.toList());
-                newList = FXCollections.observableArrayList(potentialResult);
-            }
-            case CAR_TYPE -> {
-                List<Order> potentialResult = orderCollections.stream().filter(value -> String.valueOf(value.getType_of_car()).toLowerCase().equals(filterValue)).collect(Collectors.toList());
-                newList = FXCollections.observableArrayList(potentialResult);
-            }
-            case STATE -> {
-                List<Order> potentialResult = orderCollections.stream().filter(value -> value.getCustomer().getAddress().getState().getState_short().toLowerCase().equals(filterValue)).collect(Collectors.toList());
-                newList = FXCollections.observableArrayList(potentialResult);
-            }
-            case CITY -> {
-                List<Order> potentialResult = orderCollections.stream().filter(value -> value.getCustomer().getAddress().getCity().toLowerCase().equals(filterValue)).collect(Collectors.toList());
-                newList = FXCollections.observableArrayList(potentialResult);
-            }
-        }
-
-        setDataToColumns(newList);
-        dateColumn.setSortType(TableColumn.SortType.ASCENDING);
-        viewOrdersTbv.getSortOrder().add(dateColumn);
-        viewOrdersTbv.sort();
     }
 
     private void setButtonsToColumn(TableColumn<String, Void> column, String nameOfButton, String formToRun, String buttonColor, String className) {
+        if (column == null) throw new IllegalArgumentException("Parametr column nesmí být null!");
+        if (TextUtils.isTextEmpty(nameOfButton)) throw new IllegalArgumentException("Parametr nameOfButton nesmí být null!");
+        if (TextUtils.isTextEmpty(formToRun)) throw new IllegalArgumentException("Parametr formToRun nesmí být null!");
+        if (TextUtils.isTextEmpty(buttonColor)) throw new IllegalArgumentException("Parametr buttonColor nesmí být null!");
+        if (TextUtils.isTextEmpty(className)) throw new IllegalArgumentException("Parametr className nesmí být null!");
+
         column.setCellFactory(new Callback<>() {
             @Override
             public TableCell<String, Void> call(final TableColumn<String, Void> param) {
                 final TableCell<String, Void> cell = new TableCell<>() {
                     private final Button btn = new Button(nameOfButton);
-
                     {
 
                         btn.setOnAction((ActionEvent event) -> {
@@ -260,28 +195,18 @@ public class OrderListFormController extends MainController implements Initializ
     }
 
     private void setDataToColumns(ObservableList<Order> list) {
+        if (list == null) throw new IllegalArgumentException("Parametr list nesmí být null!");
 
         orderIDColumn.setCellValueFactory(new PropertyValueFactory<>("Id"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("Date_of_fulfillment"));
         registrationPlateColumn.setCellValueFactory(new PropertyValueFactory<>("Registration_plate"));
         carTypeColumn.setCellValueFactory(new PropertyValueFactory<>("Type_of_car"));
         productionYearColumn.setCellValueFactory(new PropertyValueFactory<>("Year_of_production"));
-        noteColumn.setCellValueFactory(new PropertyValueFactory<>("Note"));
-
-        carServiceColumn.setCellValueFactory((data -> new SimpleStringProperty(data.getValue().getCar_service() == 1 ? "Ano" : "Ne")));
-        tireServiceColumn.setCellValueFactory((data -> new SimpleStringProperty(data.getValue().getTire_service() == 1 ? "Ano" : "Ne")));
-        otherServiceColumn.setCellValueFactory((data -> new SimpleStringProperty(data.getValue().getOther_service() == 1 ? "Ano" : "Ne")));
 
         customerNameColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCustomer().getFirstName()));
         customerSurnameColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCustomer().getSurname()));
         telephoneColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCustomer().getTelephoneNumber()));
         emailColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCustomer().getEmail()));
-
-        stateColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCustomer().getAddress().getState().getState_short()));
-        cityColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCustomer().getAddress().getCity()));
-        streetColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCustomer().getAddress().getStreet()));
-        streetNumberColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCustomer().getAddress().getStreetNumber()));
-        zipCodeColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCustomer().getAddress().getPostCode()));
 
         timeColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTime().getTime().toString()));
 
@@ -289,13 +214,57 @@ public class OrderListFormController extends MainController implements Initializ
     }
 
     private List<Order> findByDate(EntityManager entityManager, LocalDate date) {
+        if (entityManager == null) throw new IllegalArgumentException("Parametr entityManager nesmí být null!");
+
         return entityManager.createNamedQuery("Order.findAllByDate", Order.class)
                 .setParameter("dateOfFulfillment", date)
                 .getResultList();
     }
 
     private List<Order> findAllOrders(EntityManager entityManager) {
+        if (entityManager == null) throw new IllegalArgumentException("Parametr entityManager nesmí být null!");
+
         return entityManager.createNamedQuery("Order.findAll", Order.class)
                 .getResultList();
+    }
+
+    private ObservableList<Order> getFilteredOrders(String filterValue){
+
+        FilterType searchType = Arrays.stream(FilterType.values())
+                .filter(value -> value.getFilterType().equals(filterCB.getSelectionModel().getSelectedItem()))
+                .findFirst()
+                .orElse(null);
+
+        ObservableList<Order> newList = null;
+
+        switch (Objects.requireNonNull(searchType)) {
+            case ID -> {
+                List<Order> potentialResult = orderCollections.stream().filter(value -> String.valueOf(value.getId()).equals(filterValue)).collect(Collectors.toList());
+                newList = FXCollections.observableArrayList(potentialResult);
+            }
+            case CAR_REGISTRATION_PLATE -> {
+                List<Order> potentialResult = orderCollections.stream().filter(value -> String.valueOf(value.getRegistration_plate()).toLowerCase().contains(filterValue)).collect(Collectors.toList());
+                newList = FXCollections.observableArrayList(potentialResult);
+            }
+            case CUSTOMER_SURNAME -> {
+                List<Order> potentialResult = orderCollections.stream().filter(value -> String.valueOf(value.getCustomer().getSurname()).toLowerCase().contains(filterValue)).collect(Collectors.toList());
+                newList = FXCollections.observableArrayList(potentialResult);
+            }
+            case CAR_YEAR_PRODUCTION -> {
+                List<Order> potentialResult = orderCollections.stream().filter(value -> String.valueOf(value.getYear_of_production()).equals(filterValue)).collect(Collectors.toList());
+                newList = FXCollections.observableArrayList(potentialResult);
+            }
+            case CUSTOMER_NAME -> {
+                List<Order> potentialResult = orderCollections.stream().filter(value -> String.valueOf(value.getCustomer().getFirstName()).toLowerCase().contains(filterValue)).collect(Collectors.toList());
+                newList = FXCollections.observableArrayList(potentialResult);
+            }
+            case CAR_TYPE -> {
+                List<Order> potentialResult = orderCollections.stream().filter(value -> String.valueOf(value.getType_of_car()).toLowerCase().contains(filterValue)).collect(Collectors.toList());
+                newList = FXCollections.observableArrayList(potentialResult);
+            }
+            default -> throw new RuntimeException("Wrong SearchType");
+        }
+
+        return newList;
     }
 }

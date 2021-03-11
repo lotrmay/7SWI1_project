@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff; -fx-background-radius: 30 30 30 30;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.osu.carservice.controllers.OrderListFormController">
+<AnchorPane prefHeight="600.0" prefWidth="939.0" style="-fx-background-color: #ffffff; -fx-background-radius: 30 30 30 30;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.osu.carservice.controllers.OrderListFormController">
    <children>
       <HBox alignment="CENTER" layoutX="20.0" layoutY="20.0" maxWidth="Infinity" prefHeight="100.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="5.0">
          <children>
@@ -124,28 +124,35 @@
             </HBox>
             <TableView fx:id="viewOrdersTbv" prefHeight="358.0" prefWidth="730.0" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn fx:id="orderIDColumn" prefWidth="100.0" resizable="false" text="Číslo objednávky" />
-                  <TableColumn fx:id="dateColumn" prefWidth="92.0" resizable="false" text="Datum" />
-                  <TableColumn fx:id="timeColumn" resizable="false" text="Čas" />
-                  <TableColumn fx:id="registrationPlateColumn" prefWidth="85.0" text="SPZ vozu" />
-                  <TableColumn fx:id="carTypeColumn" prefWidth="85.0" text="Typ vozu" />
-                  <TableColumn fx:id="productionYearColumn" prefWidth="90.0" text="Rok výroby" />
-                  <TableColumn fx:id="carServiceColumn" prefWidth="105.0" resizable="false" text="Montážní služby" />
-                  <TableColumn fx:id="tireServiceColumn" prefWidth="105.0" resizable="false" text="Pneu služby" />
-                  <TableColumn fx:id="otherServiceColumn" prefWidth="105.0" resizable="false" text="Jiné služby" />
-                  <TableColumn fx:id="customerNameColumn" prefWidth="85.0" text="Jméno" />
-                  <TableColumn fx:id="customerSurnameColumn" prefWidth="85.0" text="Příjmení" />
-                  <TableColumn fx:id="telephoneColumn" prefWidth="85.0" text="Telefon" />
-                  <TableColumn fx:id="emailColumn" prefWidth="85.0" text="E-mail" />
-                  <TableColumn fx:id="stateColumn" prefWidth="85.0" text="Stát" />
-                  <TableColumn fx:id="cityColumn" prefWidth="85.0" text="Město" />
-                  <TableColumn fx:id="streetColumn" prefWidth="85.0" text="Ulice" />
-                  <TableColumn fx:id="streetNumberColumn" prefWidth="85.0" text="Č.p." />
-                  <TableColumn fx:id="zipCodeColumn" prefWidth="85.0" text="PSČ" />
-                  <TableColumn fx:id="noteColumn" prefWidth="85.0" text="Poznámka" />
-                  <TableColumn fx:id="detailColumn" prefWidth="75.0" resizable="false" text="Detail" />
-                  <TableColumn fx:id="editColumn" prefWidth="75.0" resizable="false" text="Upravit" />
-                  <TableColumn fx:id="deleteColumn" prefWidth="75.0" resizable="false" text="Smazat" />
+                  <TableColumn maxWidth="100.0" minWidth="75.0" prefWidth="75.0" resizable="false" text="Objednávka">
+                     <columns>
+                        <TableColumn fx:id="orderIDColumn" maxWidth="60.0" minWidth="40.0" prefWidth="40.0" resizable="false" text="Číslo" />
+                        <TableColumn fx:id="dateColumn" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" resizable="false" text="Datum" />
+                        <TableColumn fx:id="timeColumn" maxWidth="55.0" minWidth="55.0" prefWidth="55.0" resizable="false" text="Čas" />
+                     </columns>
+                  </TableColumn>
+                  <TableColumn maxWidth="150.0" minWidth="75.0" prefWidth="75.0" resizable="false" text="Vozidlo">
+                     <columns>
+                        <TableColumn fx:id="registrationPlateColumn" maxWidth="65.0" minWidth="65.0" prefWidth="65.0" resizable="false" text="SPZ" />
+                        <TableColumn fx:id="carTypeColumn" maxWidth="100.0" minWidth="75.0" prefWidth="75.0" text="Typ" />
+                        <TableColumn fx:id="productionYearColumn" maxWidth="80.0" minWidth="80.0" resizable="false" text="Rok výroby" />
+                     </columns>
+                  </TableColumn>
+                  <TableColumn maxWidth="150.0" minWidth="80.0" resizable="false" text="Zákazník">
+                     <columns>
+                        <TableColumn fx:id="customerNameColumn" maxWidth="120.0" minWidth="70.0" prefWidth="70.0" text="Jméno" />
+                        <TableColumn fx:id="customerSurnameColumn" maxWidth="120.0" minWidth="80.0" text="Příjmení" />
+                        <TableColumn fx:id="telephoneColumn" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" resizable="false" text="Telefon" />
+                        <TableColumn fx:id="emailColumn" maxWidth="120.0" minWidth="80.0" text="E-mail" />
+                     </columns>
+                  </TableColumn>
+                  <TableColumn maxWidth="75.0" minWidth="75.0" prefWidth="75.0" resizable="false" sortable="false" text="Akce">
+                     <columns>
+                        <TableColumn fx:id="detailColumn" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" resizable="false" sortable="false" text="Detail" />
+                        <TableColumn fx:id="editColumn" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" resizable="false" sortable="false" text="Upravit" />
+                        <TableColumn fx:id="deleteColumn" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" resizable="false" sortable="false" text="Smazat" />
+                     </columns>
+                  </TableColumn>
                </columns>
             </TableView>
          </children>

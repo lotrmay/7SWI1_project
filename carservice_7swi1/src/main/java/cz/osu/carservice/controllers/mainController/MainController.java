@@ -5,6 +5,7 @@ import cz.osu.carservice.controllers.ShowFormController;
 import cz.osu.carservice.controllers.WarningFormController;
 import cz.osu.carservice.models.entities.Order;
 import cz.osu.carservice.models.utils.DragWindowUtils;
+import cz.osu.carservice.models.utils.TextUtils;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +24,9 @@ public class MainController {
     protected static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence.createEntityManagerFactory("MySQL");
 
     protected final void setNewFormScene(String form, Event event) {
+        if (TextUtils.isTextEmpty(form)) throw new IllegalArgumentException("Parametr form nesmí být null!");
+        if (event == null) throw new IllegalArgumentException("Parametr event nesmí být null!");
+
         try {
             Parent home_page = FXMLLoader.load(getClass().getResource("/forms/" + form + ".fxml"));
             Stage app = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -33,7 +37,9 @@ public class MainController {
             scene.setFill(Color.TRANSPARENT);
 
             app.setScene(scene);
+            app.centerOnScreen();
             app.show();
+
         } catch (IOException e) {
             System.err.println("Došlo k chybě při načítání formuláře " + form + "!");
             System.err.println(e.getMessage());
@@ -41,6 +47,10 @@ public class MainController {
     }
 
     protected final void setNewFormScene(String formName, Order order, Event event) {
+        if (TextUtils.isTextEmpty(formName)) throw new IllegalArgumentException("Parametr form nesmí být null!");
+        if (order == null) throw new IllegalArgumentException("Parametr order nesmí být null!");
+        if (event == null) throw new IllegalArgumentException("Parametr event nesmí být null!");
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/forms/" + formName + ".fxml"));
             Parent root = (Parent) loader.load();
@@ -65,6 +75,7 @@ public class MainController {
             }
 
             stage.setScene(scene);
+            stage.centerOnScreen();
             stage.show();
         } catch (Exception e) {
             System.err.println("Došlo k chybě při načítání formuláře " + formName + "!");
