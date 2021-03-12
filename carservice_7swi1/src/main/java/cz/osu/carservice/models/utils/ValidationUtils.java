@@ -20,10 +20,10 @@ public class ValidationUtils {
         if (containsEmptyStrings(infoLbl, registrationPlate, typeOfCar, yearOfProduction, name, surname, telephone, email, city, street, streetCode, postCode))
             return false;
 
-        if (containsLettersOnly(infoLbl, typeOfCar, name, surname, city, street))
+        if (!containsLettersOnly(infoLbl, typeOfCar, name, surname, city, street))
             return false;
 
-        if (containsNumbersOnly(infoLbl, yearOfProduction, telephone, postCode))
+        if (!containsNumbersOnly(infoLbl, yearOfProduction, telephone, postCode))
             return false;
 
         if (!TextUtils.isValidEmailAddress(email)) {
@@ -40,17 +40,17 @@ public class ValidationUtils {
         if (checkOrderDate(infoLbl,dateOfOrder,time))
             return false;
 
-        if (TextUtils.checkLengthOfText(infoLbl, registrationPlate, 8, 7, String.format("Maximální délka %s je %d", "SPZ", 8), String.format("Minimální délka %s je %d", "SPZ", 7)) ||
-                TextUtils.checkLengthOfText(infoLbl, typeOfCar, 30, 3, String.format("Maximální délka %s je %d", "TYPU AUTA", 30), String.format("Minimální délka %s je %d", "TYPU AUTA", 3)) ||
-                TextUtils.checkLengthOfText(infoLbl, yearOfProduction, 4, 4, String.format("Maximální délka %s je %d", "ROKU VÝROBY", 4), String.format("Minimální délka %s je %d", "ROKU VÝROBY", 4)) ||
-                TextUtils.checkLengthOfText(infoLbl, name, 15, 2, String.format("Maximální délka %s je %d", "JMÉNA", 15), String.format("Minimální délka %s je %d", "JMÉNA", 2)) ||
-                TextUtils.checkLengthOfText(infoLbl, surname, 15, 2, String.format("Maximální délka %s je %d", "PŘÍJMENÍ", 15), String.format("Minimální délka %s je %d", "PŘÍJMENÍ", 2)) ||
-                TextUtils.checkLengthOfText(infoLbl, telephone, 9, 9, String.format("Maximální délka %s je %d", "TELEFONU", 9), String.format("Minimální délka %s je %d", "TELEFONU", 9)) ||
-                TextUtils.checkLengthOfText(infoLbl, email, 40, 5, String.format("Maximální délka %s je %d", "EMAILU", 40), String.format("Minimální délka %s je %d", "EMAILU", 5)) ||
-                TextUtils.checkLengthOfText(infoLbl, city, 30, 2, String.format("Maximální délka %s je %d", "MĚSTA", 30), String.format("Minimální délka %s je %d", "MĚSTA", 2)) ||
-                TextUtils.checkLengthOfText(infoLbl, street, 20, 2, String.format("Maximální délka %s je %d", "ULICE", 20), String.format("Minimální délka %s je %d", "ULICE", 2)) ||
-                TextUtils.checkLengthOfText(infoLbl, streetCode, 15, 1, String.format("Maximální délka %s je %d", "ČÍSLA ULICE", 15), String.format("Minimální délka %s je %d", "ČÍSLA ULICE", 1)) ||
-                TextUtils.checkLengthOfText(infoLbl, postCode, 15, 4, String.format("Maximální délka %s je %d", "PSČ", 15), String.format("Minimální délka %s je %d", "PSČ", 4))) {
+        if (!TextUtils.checkLengthOfText(infoLbl, registrationPlate, 8, 7, String.format("Maximální délka %s je %d", "SPZ", 8), String.format("Minimální délka %s je %d", "SPZ", 7)) ||
+                !TextUtils.checkLengthOfText(infoLbl, typeOfCar, 30, 3, String.format("Maximální délka %s je %d", "TYPU AUTA", 30), String.format("Minimální délka %s je %d", "TYPU AUTA", 3)) ||
+                !TextUtils.checkLengthOfText(infoLbl, yearOfProduction, 4, 4, String.format("Maximální délka %s je %d", "ROKU VÝROBY", 4), String.format("Minimální délka %s je %d", "ROKU VÝROBY", 4)) ||
+                !TextUtils.checkLengthOfText(infoLbl, name, 15, 2, String.format("Maximální délka %s je %d", "JMÉNA", 15), String.format("Minimální délka %s je %d", "JMÉNA", 2)) ||
+                !TextUtils.checkLengthOfText(infoLbl, surname, 15, 2, String.format("Maximální délka %s je %d", "PŘÍJMENÍ", 15), String.format("Minimální délka %s je %d", "PŘÍJMENÍ", 2)) ||
+                !TextUtils.checkLengthOfText(infoLbl, telephone, 9, 9, String.format("Maximální délka %s je %d", "TELEFONU", 9), String.format("Minimální délka %s je %d", "TELEFONU", 9)) ||
+                !TextUtils.checkLengthOfText(infoLbl, email, 40, 5, String.format("Maximální délka %s je %d", "EMAILU", 40), String.format("Minimální délka %s je %d", "EMAILU", 5)) ||
+                !TextUtils.checkLengthOfText(infoLbl, city, 30, 2, String.format("Maximální délka %s je %d", "MĚSTA", 30), String.format("Minimální délka %s je %d", "MĚSTA", 2)) ||
+                !TextUtils.checkLengthOfText(infoLbl, street, 20, 2, String.format("Maximální délka %s je %d", "ULICE", 20), String.format("Minimální délka %s je %d", "ULICE", 2)) ||
+                !TextUtils.checkLengthOfText(infoLbl, streetCode, 15, 1, String.format("Maximální délka %s je %d", "ČÍSLA ULICE", 15), String.format("Minimální délka %s je %d", "ČÍSLA ULICE", 1)) ||
+                !TextUtils.checkLengthOfText(infoLbl, postCode, 15, 4, String.format("Maximální délka %s je %d", "PSČ", 15), String.format("Minimální délka %s je %d", "PSČ", 4))) {
             return false;
         }
 
@@ -77,10 +77,10 @@ public class ValidationUtils {
         for (String text : strings) {
             if (!TextUtils.isLetterOnly(text)) {
                 FormUtils.setTextAndRedColorToLabel(infoLbl, "Špatně vyplněné údaje!");
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     public static boolean containsNumbersOnly(Label infoLbl, String... strings) {
@@ -90,10 +90,10 @@ public class ValidationUtils {
         for (String text : strings) {
             if (!TextUtils.isNumberOnly(text)) {
                 FormUtils.setTextAndRedColorToLabel(infoLbl, "Špatně vyplněné údaje!");
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     public static boolean checkYear(Label infoLbl, int year) {

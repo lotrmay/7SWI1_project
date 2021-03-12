@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="939.0" style="-fx-background-color: #ffffff; -fx-background-radius: 30 30 30 30;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.osu.carservice.controllers.OrderListFormController">
+<AnchorPane prefHeight="600.0" prefWidth="961.0" style="-fx-background-color: #ffffff; -fx-background-radius: 30 30 30 30;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.osu.carservice.controllers.OrderListFormController">
    <children>
       <HBox alignment="CENTER" layoutX="20.0" layoutY="20.0" maxWidth="Infinity" prefHeight="100.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="5.0">
          <children>

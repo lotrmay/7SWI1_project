@@ -10,7 +10,7 @@ public class TextUtils {
         return text == null || text.trim().isEmpty();
     }
     public static boolean isValidEmailAddress(String email) {
-        if (TextUtils.isTextEmpty(email)) throw new IllegalArgumentException("Parametr email nesmí být null!");
+        if (TextUtils.isTextEmpty(email)) throw new IllegalArgumentException("Parametr email nesmí být prázdný!");
 
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
         Pattern p = Pattern.compile(ePattern);
@@ -53,17 +53,17 @@ public class TextUtils {
         if (minLength < 0) throw new IllegalArgumentException("Parametr minLength nesmí být záporné číslo!");
         if (maxLength < minLength) throw new IllegalArgumentException("Parametr maxLength nesmí být menší než minLength");
 
-        boolean temp = false;
+        boolean temp = true;
 
         if (text.length() < minLength)
         {
             FormUtils.setTextAndRedColorToLabel(infoLbl,minErrorMessage);
-            temp = true;
+            temp = false;
         }
         else if (text.length() > maxLength)
         {
             FormUtils.setTextAndRedColorToLabel(infoLbl,maxErrorMessage);
-            temp = true;
+            temp = false;
         }
 
         return temp;
