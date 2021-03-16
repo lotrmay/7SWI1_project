@@ -142,7 +142,7 @@
             </Button>
          </children>
       </HBox>
-      <Label fx:id="helpBtn" layoutX="15.0" layoutY="550.0" onMouseClicked="#runHelpSite" text="Potřebuje pomoct ?" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="550.0">
+      <Label fx:id="helpBtn" layoutX="15.0" layoutY="550.0" onMouseClicked="#runHelpSite" text="Potřebuje pomoct ?" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="35.0">
          <font>
             <Font name="System Italic" size="16.0" />
          </font>

@@ -122,7 +122,7 @@
                   <Label fx:id="messageLbl" />
                </children>
             </HBox>
-            <TableView fx:id="viewOrdersTbv" prefHeight="358.0" prefWidth="730.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="viewOrdersTbv" prefHeight="358.0" prefWidth="730.0" VBox.vgrow="NEVER">
                <columns>
                   <TableColumn maxWidth="100.0" minWidth="75.0" prefWidth="75.0" resizable="false" text="Objednávka">
                      <columns>
