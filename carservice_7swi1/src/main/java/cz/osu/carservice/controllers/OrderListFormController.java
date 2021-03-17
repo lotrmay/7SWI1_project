@@ -110,8 +110,8 @@ public class OrderListFormController extends MainController implements Initializ
         }
 
         setButtonsToColumn(detailColumn, "Detail", "showForm", HEX_COLOR_GREEN, "cz.osu.carservice.controllers.ShowFormController");
-        setButtonsToColumn(editColumn, "Edit", "editForm", HEX_COLOR_BLUE, "cz.osu.carservice.controllers.EditFormController");
-        setButtonsToColumn(deleteColumn, "Delete", "warningForm", HEX_COLOR_RED, "cz.osu.carservice.controllers.WarningFormController");
+        setButtonsToColumn(editColumn, "Upravit", "editForm", HEX_COLOR_BLUE, "cz.osu.carservice.controllers.EditFormController");
+        setButtonsToColumn(deleteColumn, "Smazat", "warningForm", HEX_COLOR_RED, "cz.osu.carservice.controllers.WarningFormController");
 
         dateColumn.setSortType(TableColumn.SortType.ASCENDING);
         viewOrdersTbv.getSortOrder().add(dateColumn);
