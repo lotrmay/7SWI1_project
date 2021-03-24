@@ -107,15 +107,15 @@ public class EditFormController extends MainController implements Initializable{
 
         if(order.getCar_service() == 1){
             this.carServis = 1;
-            FormUtils.setServiceBtnGreen(carServisBtn);
+            FormUtils.changeServiceButtonColor(carServisBtn,Colors.HEX_COLOR_GREEN_LIGHT);
         }
         if(order.getTire_service() == 1){
             this.pneuServis = 1;
-            FormUtils.setServiceBtnGreen(pneuServisBtn);
+            FormUtils.changeServiceButtonColor(pneuServisBtn,Colors.HEX_COLOR_GREEN_LIGHT);
         }
         if(order.getOther_service() == 1){
             this.otherServices = 1;
-            FormUtils.setServiceBtnGreen(otherServicesBtn);
+            FormUtils.changeServiceButtonColor(otherServicesBtn,Colors.HEX_COLOR_GREEN_LIGHT);
         }
     }
     @Override
@@ -166,25 +166,25 @@ public class EditFormController extends MainController implements Initializable{
             case CAR_SERVICES -> {
                 this.carServis = (this.carServis == 0) ? 1 : 0;
                 switch (this.carServis) {
-                    case 0 -> FormUtils.setServiceBtnWhite(btn);
+                    case 0 -> FormUtils.changeServiceButtonColor(btn,Colors.HEX_COLOR_WHITE);
 
-                    case 1 -> FormUtils.setServiceBtnGreen(btn);
+                    case 1 -> FormUtils.changeServiceButtonColor(btn,Colors.HEX_COLOR_GREEN_LIGHT);
                 }
             }
             case TIRE_SERVICES -> {
                 this.pneuServis = (this.pneuServis == 0) ? 1 : 0;
                 switch (this.pneuServis) {
-                    case 0 -> FormUtils.setServiceBtnWhite(btn);
+                    case 0 -> FormUtils.changeServiceButtonColor(btn,Colors.HEX_COLOR_WHITE);
 
-                    case 1 -> FormUtils.setServiceBtnGreen(btn);
+                    case 1 -> FormUtils.changeServiceButtonColor(btn,Colors.HEX_COLOR_GREEN_LIGHT);
                 }
             }
             case OTHER_SERVICES -> {
                 this.otherServices = (this.otherServices == 0) ? 1 : 0;
                 switch (this.otherServices) {
-                    case 0 -> FormUtils.setServiceBtnWhite(btn);
+                    case 0 -> FormUtils.changeServiceButtonColor(btn,Colors.HEX_COLOR_WHITE);
 
-                    case 1 -> FormUtils.setServiceBtnGreen(btn);
+                    case 1 -> FormUtils.changeServiceButtonColor(btn,Colors.HEX_COLOR_GREEN_LIGHT);
                 }
             }
             default -> throw new IllegalStateException("Unexpected value: " + service);
@@ -222,7 +222,7 @@ public class EditFormController extends MainController implements Initializable{
             carYearOfProduction = Integer.parseInt(TextUtils.removeAllWhiteSpaces(carYearOfProductionTF.getText()));
             dateOfFulfillment = dateOfFulfillmentDT.getValue();
         }catch (Exception e){
-            FormUtils.setTextAndRedColorToLabel(messageLBL,"Data jsou ve špatném formátu!");
+            FormUtils.setTextAndColorToLabel(messageLBL,"Data jsou ve špatném formátu!",Colors.HEX_COLOR_RED);
             return;
         }
         //endregion
@@ -242,14 +242,14 @@ public class EditFormController extends MainController implements Initializable{
             if (order.getId() == this.order.getId())
                 throw new NoResultException();
 
-            FormUtils.setTextAndRedColorToLabel(messageLBL,"Termín je zabrán objednávkou č. " + order.getId());
+            FormUtils.setTextAndColorToLabel(messageLBL,"Termín je zabrán objednávkou č. " + order.getId(),Colors.HEX_COLOR_RED);
         }catch (NoResultException exception){
             Address address = DatabaseUtils.getAddressForCustomer(entityManager,city,street,streetNumber,postCode,countryCB.getValue());
             Customer customer = DatabaseUtils.getCustomerForOrder(entityManager,name,surname,phone,email,address);
 
-            orderUpdate(entityManager,carType,carPlate,carYearOfProduction,dateOfFulfillment,note,carServis,pneuServis,otherServices,customer,timeForRegistration);
+            orderChange(entityManager,carType,carPlate,carYearOfProduction,dateOfFulfillment,note,carServis,pneuServis,otherServices,customer,timeForRegistration);
 
-            FormUtils.setTextAndGreenColorToLabel(messageLBL,"Objednávka byla úspěšně změněna !");
+            FormUtils.setTextAndColorToLabel(messageLBL,"Objednávka byla úspěšně změněna !",Colors.HEX_COLOR_GREEN_LIGHT);
         }catch (Exception exception){
             System.err.println(exception.getMessage());
         }finally {
@@ -258,7 +258,7 @@ public class EditFormController extends MainController implements Initializable{
 
     }
 
-    private void orderUpdate(EntityManager entityManager, String carType, String carPlate, int carYearOfProduction, LocalDate dateOfFulfillment, String note, int carServis, int pneuServis, int otherServices, Customer customer, RegistrationTime timeForRegistration) {
+    private void orderChange(EntityManager entityManager, String carType, String carPlate, int carYearOfProduction, LocalDate dateOfFulfillment, String note, int carServis, int pneuServis, int otherServices, Customer customer, RegistrationTime timeForRegistration) {
         if (entityManager == null) throw new IllegalArgumentException("Parametr entityManager nesmí být null!");
 
         try {

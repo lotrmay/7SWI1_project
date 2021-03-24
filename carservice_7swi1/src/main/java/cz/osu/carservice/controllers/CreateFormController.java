@@ -133,25 +133,25 @@ public class CreateFormController extends MainController implements Initializabl
             case CAR_SERVICES -> {
                 this.carServis = (this.carServis == 0) ? 1 : 0;
                 switch (this.carServis) {
-                    case 0 -> FormUtils.setServiceBtnWhite(btn);
+                    case 0 -> FormUtils.changeServiceButtonColor(btn,Colors.HEX_COLOR_WHITE);
 
-                    case 1 -> FormUtils.setServiceBtnGreen(btn);
+                    case 1 -> FormUtils.changeServiceButtonColor(btn,Colors.HEX_COLOR_GREEN_LIGHT);
                 }
             }
             case TIRE_SERVICES -> {
                 this.pneuServis = (this.pneuServis == 0) ? 1 : 0;
                 switch (this.pneuServis) {
-                    case 0 -> FormUtils.setServiceBtnWhite(btn);
+                    case 0 -> FormUtils.changeServiceButtonColor(btn,Colors.HEX_COLOR_WHITE);
 
-                    case 1 -> FormUtils.setServiceBtnGreen(btn);
+                    case 1 -> FormUtils.changeServiceButtonColor(btn,Colors.HEX_COLOR_GREEN_LIGHT);
                 }
             }
             case OTHER_SERVICES -> {
                 this.otherServices = (this.otherServices == 0) ? 1 : 0;
                 switch (this.otherServices) {
-                    case 0 -> FormUtils.setServiceBtnWhite(btn);
+                    case 0 -> FormUtils.changeServiceButtonColor(btn,Colors.HEX_COLOR_WHITE);
 
-                    case 1 -> FormUtils.setServiceBtnGreen(btn);
+                    case 1 -> FormUtils.changeServiceButtonColor(btn,Colors.HEX_COLOR_GREEN_LIGHT);
                 }
             }
             default -> throw new IllegalStateException("Unexpected value: " + service);
@@ -194,7 +194,7 @@ public class CreateFormController extends MainController implements Initializabl
             carYearOfProduction = Integer.parseInt(TextUtils.removeAllWhiteSpaces(carYearOfProductionTF.getText()));
             dateOfFulfillment = dateOfFulfillmentDT.getValue();
         }catch (Exception e){
-            FormUtils.setTextAndRedColorToLabel(messageLBL,"Data jsou ve špatném formátu!");
+            FormUtils.setTextAndColorToLabel(messageLBL,"Data jsou ve špatném formátu!",Colors.HEX_COLOR_RED);
             return;
         }
         //endregion
@@ -211,7 +211,7 @@ public class CreateFormController extends MainController implements Initializabl
             timeForRegistration = DatabaseUtils.getRegistrationTimeForOrder(entityManager,time);
             Order order = DatabaseUtils.checkIfRegistrationTimeIsReserved(entityManager,timeForRegistration,dateOfFulfillmentDT.getValue());
 
-            FormUtils.setTextAndRedColorToLabel(messageLBL,"Termín je zabrán objednávkou č. " + order.getId());
+            FormUtils.setTextAndColorToLabel(messageLBL,"Termín je zabrán objednávkou č. " + order.getId(),Colors.HEX_COLOR_RED);
         }catch (NoResultException exception){
             Address address = DatabaseUtils.getAddressForCustomer(entityManager,city,street,streetNumber,postCode,countryCB.getValue());
             Customer customer = DatabaseUtils.getCustomerForOrder(entityManager,name,surname,phone,email,address);
@@ -222,7 +222,7 @@ public class CreateFormController extends MainController implements Initializabl
             entityManager.persist(order);
             entityManager.getTransaction().commit();
 
-            FormUtils.setTextAndGreenColorToLabel(messageLBL,"Objednávka byla úspěšně zaregistrována !");
+            FormUtils.setTextAndColorToLabel(messageLBL,"Objednávka byla úspěšně zaregistrována !",Colors.HEX_COLOR_GREEN_LIGHT);
         }catch (Exception exception){
             System.err.println(exception.getMessage());
         }finally {

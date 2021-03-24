@@ -2,6 +2,7 @@ package cz.osu.carservice.controllers;
 
 import cz.osu.carservice.controllers.mainController.MainController;
 import cz.osu.carservice.models.entities.Order;
+import cz.osu.carservice.models.utils.Colors;
 import cz.osu.carservice.models.utils.FormUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -79,9 +80,9 @@ public class ShowFormController extends MainController {
         dateOfFulfillmentDT.setValue(order.getDate_of_fulfillment());
         dateOfFulfillmentDT.setDisable(true);
 
-        if(order.getCar_service() == 1) FormUtils.setServiceBtnGreen(carServisBtn);
-        if(order.getTire_service() == 1) FormUtils.setServiceBtnGreen(pneuServisBtn);
-        if(order.getOther_service() == 1) FormUtils.setServiceBtnGreen(otherServicesBtn);
+        if(order.getCar_service() == 1) FormUtils.changeServiceButtonColor(carServisBtn, Colors.HEX_COLOR_GREEN_LIGHT);
+        if(order.getTire_service() == 1) FormUtils.changeServiceButtonColor(pneuServisBtn, Colors.HEX_COLOR_GREEN_LIGHT);
+        if(order.getOther_service() == 1) FormUtils.changeServiceButtonColor(otherServicesBtn, Colors.HEX_COLOR_GREEN_LIGHT);
     }
     @FXML
     private void returnToMainScene(MouseEvent event){

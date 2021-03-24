@@ -3,6 +3,7 @@ package cz.osu.carservice.controllers;
 import cz.osu.carservice.controllers.mainController.MainController;
 import cz.osu.carservice.models.entities.*;
 import cz.osu.carservice.models.enums.FilterType;
+import cz.osu.carservice.models.utils.Colors;
 import cz.osu.carservice.models.utils.FormUtils;
 import cz.osu.carservice.models.utils.TextUtils;
 import javafx.beans.property.SimpleStringProperty;
@@ -65,12 +66,6 @@ public class OrderListFormController extends MainController implements Initializ
     private TextField searchField;
     //endregion
 
-    //region Colors
-    private final static String HEX_COLOR_GREEN = "#6cc969";
-    private final static String HEX_COLOR_BLUE = "#60aac4";
-    private final static String HEX_COLOR_RED = "#cf3232";
-    //endregion
-
     //region DataVariable
     private EntityManager entityManager;
     private ObservableList<Order> orderCollections;
@@ -109,9 +104,9 @@ public class OrderListFormController extends MainController implements Initializ
             entityManager.close();
         }
 
-        setButtonsToColumn(detailColumn, "Detail", "showForm", HEX_COLOR_GREEN, "cz.osu.carservice.controllers.ShowFormController");
-        setButtonsToColumn(editColumn, "Upravit", "editForm", HEX_COLOR_BLUE, "cz.osu.carservice.controllers.EditFormController");
-        setButtonsToColumn(deleteColumn, "Smazat", "warningForm", HEX_COLOR_RED, "cz.osu.carservice.controllers.WarningFormController");
+        setButtonsToColumn(detailColumn, "Detail", "showForm", Colors.HEX_COLOR_GREEN, "cz.osu.carservice.controllers.ShowFormController");
+        setButtonsToColumn(editColumn, "Upravit", "editForm", Colors.HEX_COLOR_BLUE, "cz.osu.carservice.controllers.EditFormController");
+        setButtonsToColumn(deleteColumn, "Smazat", "warningForm", Colors.HEX_COLOR_RED_DARK, "cz.osu.carservice.controllers.WarningFormController");
 
         dateColumn.setSortType(TableColumn.SortType.ASCENDING);
         viewOrdersTbv.getSortOrder().add(dateColumn);
@@ -134,7 +129,7 @@ public class OrderListFormController extends MainController implements Initializ
             if (TextUtils.isTextEmpty(filterValue)) setDataToColumns(orderCollections);
             else setDataToColumns(getFilteredOrders(filterValue));
         } catch (Exception e) {
-            FormUtils.setTextAndRedColorToLabel(messageLbl, "Špatný formát data!");
+            FormUtils.setTextAndColorToLabel(messageLbl, "Špatný formát data!",Colors.HEX_COLOR_RED_DARK);
         } finally {
             entityManager.close();
 

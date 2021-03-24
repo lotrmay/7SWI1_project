@@ -27,7 +27,7 @@ public class ValidationUtils {
             return false;
 
         if (!TextUtils.isValidEmailAddress(email)) {
-            FormUtils.setTextAndRedColorToLabel(infoLbl, "Špatně zadaný email!");
+            FormUtils.setTextAndColorToLabel(infoLbl,"Špatně zadaný email!",Colors.HEX_COLOR_RED);
             return false;
         }
 
@@ -63,7 +63,7 @@ public class ValidationUtils {
 
         for (String text : strings) {
             if (TextUtils.isTextEmpty(text)) {
-                FormUtils.setTextAndRedColorToLabel(infoLbl, "Vyplňte všechny údaje!");
+                FormUtils.setTextAndColorToLabel(infoLbl,"Vyplňte všechny údaje!",Colors.HEX_COLOR_RED);
                 return true;
             }
         }
@@ -76,7 +76,7 @@ public class ValidationUtils {
 
         for (String text : strings) {
             if (!TextUtils.isLetterOnly(text)) {
-                FormUtils.setTextAndRedColorToLabel(infoLbl, "Špatně vyplněné údaje!");
+                FormUtils.setTextAndColorToLabel(infoLbl,"Špatně vyplněné údaje!",Colors.HEX_COLOR_RED);
                 return false;
             }
         }
@@ -89,7 +89,7 @@ public class ValidationUtils {
 
         for (String text : strings) {
             if (!TextUtils.isNumberOnly(text)) {
-                FormUtils.setTextAndRedColorToLabel(infoLbl, "Špatně vyplněné údaje!");
+                FormUtils.setTextAndColorToLabel(infoLbl,"Špatně vyplněné údaje!",Colors.HEX_COLOR_RED);
                 return false;
             }
         }
@@ -104,10 +104,10 @@ public class ValidationUtils {
         int actualYear = localDate.getYear();
 
         if (year > actualYear) {
-            FormUtils.setTextAndRedColorToLabel(infoLbl, "Tento rok ještě nenastal!");
+            FormUtils.setTextAndColorToLabel(infoLbl,"Tento rok ještě nenastal!",Colors.HEX_COLOR_RED);
             return false;
         } else if (year < 1950) {
-            FormUtils.setTextAndRedColorToLabel(infoLbl, "Tento rok je příliš v minulosti!");
+            FormUtils.setTextAndColorToLabel(infoLbl,"Tento rok je příliš v minulosti!",Colors.HEX_COLOR_RED);
             return false;
         }
         return true;
@@ -122,7 +122,7 @@ public class ValidationUtils {
         LocalDateTime dt = LocalDateTime.of(datePart, timePart);
 
         if (dt.isBefore(LocalDateTime.now())){
-            FormUtils.setTextAndRedColorToLabel(infoLbl, "Toto datum a čas již nastalo!");
+            FormUtils.setTextAndColorToLabel(infoLbl,"Toto datum a čas již nastalo!",Colors.HEX_COLOR_RED);
             return true;
         }
 
@@ -137,7 +137,7 @@ public class ValidationUtils {
             if (item == 1) return false;
         }
 
-        FormUtils.setTextAndRedColorToLabel(infoLbl, "Vyberte typ služby!");
+        FormUtils.setTextAndColorToLabel(infoLbl,"Vyberte typ služby!",Colors.HEX_COLOR_RED);
         return true;
     }
 }

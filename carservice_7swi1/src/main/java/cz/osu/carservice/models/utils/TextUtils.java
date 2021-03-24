@@ -57,12 +57,12 @@ public class TextUtils {
 
         if (text.length() < minLength)
         {
-            FormUtils.setTextAndRedColorToLabel(infoLbl,minErrorMessage);
+            FormUtils.setTextAndColorToLabel(infoLbl,minErrorMessage,Colors.HEX_COLOR_RED);
             temp = false;
         }
         else if (text.length() > maxLength)
         {
-            FormUtils.setTextAndRedColorToLabel(infoLbl,maxErrorMessage);
+            FormUtils.setTextAndColorToLabel(infoLbl,maxErrorMessage,Colors.HEX_COLOR_RED);
             temp = false;
         }
 
