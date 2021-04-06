@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/OrderCreation")
-@CrossOrigin(origins = "http://localhost:3001")
+@CrossOrigin("*")
 public class RegistrationTimeController {
 
     private final RegistrationTimeService registrationTimeService;

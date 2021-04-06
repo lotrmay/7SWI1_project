@@ -1,6 +1,5 @@
 package cz.osu.swi.car_service.controllers;
 
-import cz.osu.swi.car_service.models.RegistrationTime;
 import cz.osu.swi.car_service.models.State;
 import cz.osu.swi.car_service.services.StateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/OrderCreation")
-@CrossOrigin(origins = "http://localhost:3001")
+@CrossOrigin("*")
 public class StateController {
 
     private final StateService stateService;
