@@ -1,0 +1,157 @@
+#formWrapper {
+  width: 1300px;
+  height: 860px;
+  box-shadow: 0 0 5px black;
+  background-color: rgba(255, 255, 255, 0.45);
+  border-radius: 3%;
+  border: 2px solid #28272b;
+  overflow: hidden;
+}
+
+#leftPart {
+  float: left;
+  width: 400px;
+  height: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#rightPart {
+  float: right;
+  width: 860px;
+  height: 720px;
+  margin-right: 2%;
+}
+#mainTitle {
+  text-align: center;
+  font-family: "Lobster", cursive;
+}
+#topPart {
+  width: 100%;
+  height: 50%;
+}
+.line {
+  width: 35%;
+  height: 100%;
+  float: left;
+}
+#topRightPart {
+  float: right;
+  width: 65%;
+  height: 75%;
+}
+#bottomRightPart {
+  float: right;
+  width: 65%;
+  height: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#topLeftPart {
+  float: left;
+  width: 55%;
+  height: 100%;
+}
+label {
+  width: 87%;
+  height: 25px;
+  display: block;
+  margin: 2%;
+  margin-top: 8%;
+  font-weight: bold;
+}
+.inputBox {
+  width: 87%;
+  height: 25px;
+  display: block;
+  margin: 2%;
+}
+#telephoneCode {
+  width: 15%;
+  height: 25px;
+  margin-left: 2%;
+  background-color: gray;
+  border-color: gray;
+  cursor: context-menu;
+}
+#telephoneInput {
+  width: 70%;
+  height: 25px;
+}
+select {
+  width: 87%;
+  height: 30px;
+  display: block;
+  margin: 2%;
+}
+#orderStreet {
+  width: 45%;
+  height: 25px;
+  margin-left: 2%;
+  margin-bottom: 2%;
+}
+#orderStreetCode {
+  width: 40%;
+  height: 25px;
+}
+#lineArea {
+  width: 30%;
+  height: 100%;
+  float: left;
+}
+#orderNote {
+  height: 80%;
+  resize: none;
+}
+#bottomPart {
+  height: 50%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 3%;
+}
+image {
+  height: 200px;
+  width: 200px;
+}
+.service {
+  width: 60%;
+  height: 50%;
+  margin: 1%;
+  border-radius: 50%;
+  border-color: black;
+  background-color: white;
+  cursor: pointer;
+  opacity: 0.9;
+}
+.service img {
+  width: 50%;
+}
+.service:hover {
+  opacity: 1;
+}
+.green {
+  background-color: greenyellow;
+}
+#topRightRightPart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  float: right;
+  width: 45%;
+  height: 100%;
+}
+#orderButton {
+  background-color: #6cc969;
+  height: 45%;
+  width: 50%;
+  border-radius: 50%;
+  border: none;
+  opacity: 0.9;
+  cursor: pointer;
+}
+#orderButton:hover {
+  opacity: 1;
+}
