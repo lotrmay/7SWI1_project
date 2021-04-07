@@ -1,6 +1,8 @@
-import React from "react";
+import React,{useState} from "react";
+import TimeBox from "./TimeBox";
 
 const CreateOrderButton = () => {
+  const [message,setMessage] = useState('');
 
   function getValues(){
     const carServices = document.getElementById('carServis').value
@@ -32,16 +34,41 @@ const CreateOrderButton = () => {
         ,'orderDateTitle':orderDate,'orderNameTitle':orderName,'orderSurnameTitle':orderSurname,'orderEmailTitle':orderEmail,
         'orderPostCodeTitle': orderPostCode,'orderCityTitle':orderCity,'countrySelectTitle':countrySelect,'telephoneInputTitle':telephoneInput,
         'orderStreetTitle': orderStreet,'orderStreetCodeTitle':orderStreetCode,'carTimeTitle':carTime,'carServicesTitle':carServices,
-        'pneuServis':pneuServis,'otherServices':otherServices,'note':note})
+        'pneuServisTitle':pneuServis,'otherServicesTitle':otherServices,'note':note})
       };
+
     fetch('http://localhost:8080/OrderCreation/post', requestOptions)
-        .then(response => response.json());
+        .then(response => {
+          if (response.ok) return response.json();
+          return response.json().then(response =>{
+            setMessage(response.message);
+            document.getElementById('resultMessage').value = response.message;
+          })
+        })
+        .catch(error => console.log(error.message));
   }
 
   return (
-    <button id="orderButton" onClick={getValues} type="button">
-      <h2>Vytvořit</h2>
-    </button>
+    <>
+      <div id="topRightPart">
+      <div id="topLeftPart">
+          <label htmlFor="orderDate">Datum</label>
+          <input type="date" className="inputBox" id="orderDate" name="orderDate"/>
+
+          <TimeBox/>
+          
+      </div>
+      <div id="topRightRightPart">
+      <button id="orderButton" onClick={getValues} type="button">
+        <h2>Vytvořit</h2>
+      </button>
+      </div>
+  </div>
+  <div id="bottomRightPart">
+        {message}
+  </div>
+</>
+  
 )}
 
 export default CreateOrderButton

@@ -5,6 +5,7 @@ import cz.osu.swi.car_service.repository.RegistrationTimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.util.List;
 
 @Service
@@ -19,5 +20,9 @@ public class RegistrationTimeService {
 
     public List<RegistrationTime> getRegistrationTime(){
         return registrationTimeRepository.findAll();
+    }
+
+    public RegistrationTime getRegistrationTimeForOrder(Time time){
+        return registrationTimeRepository.getRegistrationTimeForOrder(time);
     }
 }

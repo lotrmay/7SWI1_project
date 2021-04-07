@@ -6,6 +6,7 @@
   border-radius: 3%;
   border: 2px solid #28272b;
   overflow: hidden;
+  margin-top: 5%;
 }
 
 #leftPart {
@@ -154,4 +155,7 @@ image {
 }
 #orderButton:hover {
   opacity: 1;
+}
+button {
+  outline: none;
 }

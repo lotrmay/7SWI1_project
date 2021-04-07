@@ -20,4 +20,8 @@ public class StateService {
     public List<State> getStates() {
         return stateRepository.findAll();
     }
+
+    public State getStateByShortcut(String shortcut){
+        return stateRepository.getStateShortcut(shortcut);
+    }
 }

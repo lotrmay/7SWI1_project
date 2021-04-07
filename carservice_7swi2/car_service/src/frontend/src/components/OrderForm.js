@@ -2,11 +2,10 @@ import React from "react";
 import '../css/OrderForm.css';
 import ServiceButton from "./ServiceButton";
 import StateBox from "./StateBox";
-import TimeBox from "./TimeBox";
 import imageCarSevis from '../images/autoservis.png';
 import imagePneuSevis from '../images/pneuservis.png';
 import imageOtherSevices from '../images/otherservices.png';
-import CreateOrderButton from "./CreateOrderButton";
+import OrderResult from "./OrderResult";
 
 const OrderForm = () => {
     return (
@@ -30,21 +29,9 @@ const OrderForm = () => {
                         <label htmlFor="year">Rok výroby</label>
                         <input type="number" className="inputBox" min="1950" max="2099" step="1" id="carYear" name="year"/>
                     </div>
-                    <div id="topRightPart">
-                        <div id="topLeftPart">
-                            <label htmlFor="orderDate">Datum</label>
-                            <input type="date" data-date-format="DD MMMM YYYY" className="inputBox" id="orderDate" name="orderDate"/>
 
-                            <TimeBox/>
-                            
-                        </div>
-                        <div id="topRightRightPart">
-                            <CreateOrderButton/>
-                        </div>
-                    </div>
-                    <div id="bottomRightPart">
-                        Chybová hláška
-                    </div>
+                   <OrderResult/>
+
                 </div>
                 <div id="bottomPart">
 
