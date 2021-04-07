@@ -18,13 +18,13 @@ public class Customer implements Serializable {
     @Column(name = "id",unique=true,nullable = false)
     private long id;
 
-    @Column(name = "firstName",nullable = false,length = 15)
+    @Column(name = "first_name",nullable = false,length = 15)
     private String firstName;
 
     @Column(name = "surname",nullable = false,length = 15)
     private String surname;
 
-    @Column(name = "telephoneNumber",nullable = false,length = 15)
+    @Column(name = "telephone_number",nullable = false,length = 15)
     private String telephoneNumber;
 
     @Column(name = "email",nullable = false,length = 40)

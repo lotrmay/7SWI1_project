@@ -27,27 +27,6 @@ public class TextUtilsTest {
         assertFalse(TextUtils.isTextEmpty(text));
     }
 
-    @Test
-    public void isValidEmailAddressTestStringNull() {
-        String text = null;
-        try {
-            TextUtils.isValidEmailAddress(text);
-            fail("IsValidEmailAddress should throw an exception because text is null!");
-        } catch (IllegalArgumentException exception) {
-            assertTrue(exception.getMessage().contains("email"));
-        }
-    }
-
-    @Test
-    public void isValidEmailAddressTestStringEmpty() {
-        String text = "";
-        try {
-            TextUtils.isValidEmailAddress(text);
-            fail("IsValidEmailAddress should throw an exception because text is empty!");
-        } catch (IllegalArgumentException exception) {
-            assertTrue(exception.getMessage().contains("email"));
-        }
-    }
 
     @Test
     public void isValidEmailAddressForStandardInput() {
@@ -61,27 +40,6 @@ public class TextUtilsTest {
         assertFalse(TextUtils.isValidEmailAddress(text));
     }
 
-    @Test
-    public void isNumberOnlyTestStringNull() {
-        String text = null;
-        try {
-            TextUtils.isNumberOnly(text);
-            fail("IsNumberOnly should throw an exception because text is null!");
-        } catch (IllegalArgumentException exception) {
-            assertTrue(exception.getMessage().contains("text"));
-        }
-    }
-
-    @Test
-    public void isNumberOnlyTestStringEmpty() {
-        String text = "";
-        try {
-            TextUtils.isNumberOnly(text);
-            fail("IsNumberOnly should throw an exception because text is empty!");
-        } catch (IllegalArgumentException exception) {
-            assertTrue(exception.getMessage().contains("text"));
-        }
-    }
 
     @Test
     public void isNumberOnlyForStandardInput() {
@@ -93,28 +51,6 @@ public class TextUtilsTest {
     public void isNumberOnlyForNonStandardInput() {
         String text = "45a67s89";
         assertFalse(TextUtils.isNumberOnly(text));
-    }
-
-    @Test
-    public void isLetterOnlyTestStringNull() {
-        String text = null;
-        try {
-            TextUtils.isLetterOnly(text);
-            fail("IsLetterOnly should throw an exception because text is null!");
-        } catch (IllegalArgumentException exception) {
-            assertTrue(exception.getMessage().contains("text"));
-        }
-    }
-
-    @Test
-    public void isLetterOnlyTestStringEmpty() {
-        String text = "";
-        try {
-            TextUtils.isLetterOnly(text);
-            fail("IsLetterOnly should throw an exception because text is empty!");
-        } catch (IllegalArgumentException exception) {
-            assertTrue(exception.getMessage().contains("text"));
-        }
     }
 
     @Test
@@ -130,17 +66,6 @@ public class TextUtilsTest {
     }
 
     @Test
-    public void removeAllWhiteSpacesTestStringNull() {
-        String text = null;
-        try {
-            TextUtils.removeAllWhiteSpaces(text);
-            fail("RemoveAllWhiteSpaces should throw an exception because text is null!");
-        } catch (IllegalArgumentException exception) {
-            assertTrue(exception.getMessage().contains("text"));
-        }
-    }
-
-    @Test
     public void removeAllWhiteSpacesForStandardInput() {
         String text = "auto dum okno ";
         String expectedResult = "autodumokno";
@@ -148,27 +73,6 @@ public class TextUtilsTest {
         assertEquals(expectedResult, TextUtils.removeAllWhiteSpaces(text));
     }
 
-    @Test
-    public void firstUpperRestLowerTestStringNull() {
-        String text = null;
-        try {
-            TextUtils.firstUpperRestLower(text);
-            fail("FirstUpperRestLower should throw an exception because text is null!");
-        } catch (IllegalArgumentException exception) {
-            assertTrue(exception.getMessage().contains("text"));
-        }
-    }
-
-    @Test
-    public void firstUpperRestLowerTestStringEmpty() {
-        String text = "";
-        try {
-            TextUtils.firstUpperRestLower(text);
-            fail("FirstUpperRestLower should throw an exception because text is empty!");
-        } catch (IllegalArgumentException exception) {
-            assertTrue(exception.getMessage().contains("text"));
-        }
-    }
 
     @Test
     public void firstUpperRestLowerForStandardInput() {
@@ -178,27 +82,6 @@ public class TextUtilsTest {
         assertEquals(expectedResult, TextUtils.firstUpperRestLower(text));
     }
 
-    @Test
-    public void checkTelephoneFormatTestStringNull() {
-        String telephone = null;
-        try {
-            TextUtils.checkTelephoneFormat(telephone);
-            fail("CheckTelephone should throw an exception because text is null!");
-        } catch (IllegalArgumentException exception) {
-            assertTrue(exception.getMessage().contains("text"));
-        }
-    }
-
-    @Test
-    public void checkTelephoneFormatTestStringEmpty() {
-        String telephone = "";
-        try {
-            TextUtils.checkTelephoneFormat(telephone);
-            fail("CheckTelephone should throw an exception because text is null!");
-        } catch (IllegalArgumentException exception) {
-            assertTrue(exception.getMessage().contains("text"));
-        }
-    }
 
     @Test
     public void checkTelephoneFormatForStandardInput() {
@@ -225,17 +108,6 @@ public class TextUtilsTest {
         }
     }
 
-    @Test
-    public void checkLengthOfTextForEmptyTextParameter() {
-        Label label = new Label("Test label");
-        String text = "";
-        try {
-            TextUtils.checkLengthOfText(label, text, 8, 2, "Chyba max", "Chyba min");
-            fail("CheckLengthOfText should throw an exception because text is null!");
-        } catch (IllegalArgumentException exception) {
-            assertTrue(exception.getMessage().contains("text"));
-        }
-    }
 
     @Test
     public void checkLengthOfTextForEmptyMaxTextParameter() {

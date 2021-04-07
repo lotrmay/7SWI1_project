@@ -9,8 +9,6 @@ import java.util.Date;
 public class ConversionUtils {
 
     public static Time getTimeFromString(String text) {
-        if(TextUtils.isTextEmpty(text)) throw new IllegalArgumentException("Vstupní parametr nesmí být prázdný");
-
         DateFormat formatter = new SimpleDateFormat("HH:mm");
         try {
             return new Time(formatter.parse(text).getTime());
