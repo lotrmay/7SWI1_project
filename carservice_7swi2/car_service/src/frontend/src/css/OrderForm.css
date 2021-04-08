@@ -159,3 +159,9 @@ image {
 button {
   outline: none;
 }
+.redText {
+  color: red;
+}
+.greenText {
+  color: green;
+}

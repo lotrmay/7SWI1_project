@@ -10,10 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @RestController
 @RequestMapping(path = "/OrderCreation")
@@ -37,7 +40,6 @@ public class OrderController {
 
     @PostMapping("/post")
     public void createOrder(@RequestBody Map<String, Object> payLoad) {
-
         String city = TextUtils.firstUpperRestLower(TextUtils.removeAllWhiteSpaces((String) payLoad.get("orderCityTitle")));
         String street = TextUtils.firstUpperRestLower(TextUtils.removeAllWhiteSpaces((String) payLoad.get("orderStreetTitle")));
         String streetNumber = TextUtils.removeAllWhiteSpaces((String) payLoad.get("orderStreetCodeTitle"));
@@ -100,6 +102,37 @@ public class OrderController {
 
         orderService.saveOrder(newOrder);
 
-        throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Objednávka byla úspěšně zaregistrována !");
+        throw new ResponseStatusException(HttpStatus.ACCEPTED, "Objednávka byla úspěšně zaregistrována !");
+    }
+
+    @GetMapping("/getAvailableTime")
+    public LocalDateTime getBestTime(){
+        LocalDate current = LocalDate.now();
+        Time currentTime = ConversionUtils.getTimeFromString(LocalTime.now().toString());
+        List<RegistrationTime> times = this.registrationTimeService.getRegistrationTime();
+        RegistrationTime timeBest;
+
+        do{
+            List<RegistrationTime> temp = this.orderService.getRegistrationTimesWithOrders(current);
+            if(temp==null||temp.size()==times.size()){
+                current = current.plusDays(1);
+            }
+            else{
+                times.removeAll(temp);
+                Time lastAvailableTime=ConversionUtils.getTimeFromString(times.get(times.size()-1).getTime());
+                if(Objects.requireNonNull(currentTime).after(lastAvailableTime)){
+                    current = current.plusDays(1);
+                    currentTime = Time.valueOf(LocalTime.of(6,0,0));
+                    times=this.registrationTimeService.getRegistrationTime();
+                }
+                else{
+                    timeBest = times.get(0);
+                    break;
+                }
+            }
+
+        }while (true);
+
+        return LocalDateTime.of(current, LocalTime.parse(timeBest.getTime()));
     }
 }

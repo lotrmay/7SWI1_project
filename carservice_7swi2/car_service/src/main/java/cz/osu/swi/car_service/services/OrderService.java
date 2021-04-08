@@ -6,7 +6,9 @@ import cz.osu.swi.car_service.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class OrderService {
@@ -23,6 +25,10 @@ public class OrderService {
 
     public void saveOrder(Order order){
         this.orderRepository.save(order);
+    }
+
+    public List<RegistrationTime> getRegistrationTimesWithOrders(LocalDate date){
+        return this.orderRepository.getRegistrationTimesWithOrders(date);
     }
 
 }

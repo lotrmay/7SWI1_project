@@ -1,8 +1,8 @@
 import React,{useState} from "react";
 import TimeBox from "./TimeBox";
 
-const CreateOrderButton = () => {
-  const [message,setMessage] = useState('');
+const OrderResult = (props) => {
+  const [messageResponse,setMessageResponse] = useState([]);
 
   function getValues(){
     const carServices = document.getElementById('carServis').value
@@ -39,13 +39,15 @@ const CreateOrderButton = () => {
 
     fetch('http://localhost:8080/OrderCreation/post', requestOptions)
         .then(response => {
-          if (response.ok) return response.json();
           return response.json().then(response =>{
-            setMessage(response.message);
-            document.getElementById('resultMessage').value = response.message;
+            setMessageResponse(response);
           })
         })
         .catch(error => console.log(error.message));
+  }
+
+  if (typeof( props.AvailableTime) !== 'undefined' &&  props.AvailableTime != null) {
+    document.getElementById("orderDate").value=props.AvailableDate;
   }
 
   return (
@@ -55,7 +57,7 @@ const CreateOrderButton = () => {
           <label htmlFor="orderDate">Datum</label>
           <input type="date" className="inputBox" id="orderDate" name="orderDate"/>
 
-          <TimeBox/>
+          <TimeBox AvailableTime = {props.AvailableTime}/>
           
       </div>
       <div id="topRightRightPart">
@@ -64,11 +66,11 @@ const CreateOrderButton = () => {
       </button>
       </div>
   </div>
-  <div id="bottomRightPart">
-        {message}
+  <div id="bottomRightPart" className={messageResponse.status === 202 ? 'greenText' : 'redText' }>
+        {messageResponse.message}
   </div>
 </>
   
 )}
 
-export default CreateOrderButton
+export default OrderResult

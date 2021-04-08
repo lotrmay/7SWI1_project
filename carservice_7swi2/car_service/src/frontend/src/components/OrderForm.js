@@ -1,4 +1,5 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
+import axios from "axios";
 import '../css/OrderForm.css';
 import ServiceButton from "./ServiceButton";
 import StateBox from "./StateBox";
@@ -8,6 +9,18 @@ import imageOtherSevices from '../images/otherservices.png';
 import OrderResult from "./OrderResult";
 
 const OrderForm = () => {
+    const [availableTime,setAvailableTime] = useState([]);
+
+    const fetchsetAvailableTime = () => {
+        axios.get("http://localhost:8080/OrderCreation/getAvailableTime").then(res => {
+            setAvailableTime(res.data.split('T'))
+        });
+    };
+
+    useEffect(() => {
+        fetchsetAvailableTime();
+    },[]);
+
     return (
         <div id="formWrapper">
         <form id="orderForm">
@@ -30,7 +43,7 @@ const OrderForm = () => {
                         <input type="number" className="inputBox" min="1950" max="2099" step="1" id="carYear" name="year"/>
                     </div>
 
-                   <OrderResult/>
+                   <OrderResult AvailableDate={availableTime[0]} AvailableTime={availableTime[1]}/>
 
                 </div>
                 <div id="bottomPart">

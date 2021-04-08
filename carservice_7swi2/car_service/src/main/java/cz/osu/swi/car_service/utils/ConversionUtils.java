@@ -24,8 +24,6 @@ public class ConversionUtils {
     }
 
     public static String getStringFromTime(Time time){
-        if(time == null) throw new IllegalArgumentException("Vstupní parametr nesmí být null");
-
         Date myDate=new Date(time.getTime());
         DateFormat df=new SimpleDateFormat("H:mm");
         return df.format(myDate);
