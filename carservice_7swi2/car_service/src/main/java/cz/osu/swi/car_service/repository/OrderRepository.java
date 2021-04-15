@@ -17,10 +17,16 @@ public interface OrderRepository
     @Query("SELECT c FROM Order c WHERE c.date_of_fulfillment = :dateOfFulfillment and c.time = :time")
     Order checkIfRegistrationTimeIsReserved(@Param("dateOfFulfillment") LocalDate date, @Param("time") RegistrationTime time);
 
+    @Query("SELECT c FROM Order c WHERE c.date_of_fulfillment = :dateOfFulfillment")
+    List<Order> getOrdersForDay(@Param("dateOfFulfillment") LocalDate date);
+
     @Query("SELECT c \n" +
             "FROM RegistrationTime c \n" +
             "JOIN Order e ON e.time = c.id \n" +
             "WHERE e.date_of_fulfillment = :date")
     List<RegistrationTime> getRegistrationTimesWithOrders(@Param("date") LocalDate date);
-
+    @Query("SELECT c \n" +
+            "FROM Order c \n" +
+            "WHERE c.date_of_fulfillment = :date AND c.time=:time")
+    Order getOrderForDateTime(@Param("time") RegistrationTime time,@Param("date") LocalDate date);
 }

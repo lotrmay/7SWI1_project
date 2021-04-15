@@ -110,11 +110,11 @@ public class OrderController {
         LocalDate current = LocalDate.now();
         Time currentTime = ConversionUtils.getTimeFromString(LocalTime.now().toString());
         List<RegistrationTime> times = this.registrationTimeService.getRegistrationTime();
-        RegistrationTime timeBest;
+        RegistrationTime timeBest = null;
 
         do{
             List<RegistrationTime> temp = this.orderService.getRegistrationTimesWithOrders(current);
-            if(temp==null||temp.size()==times.size()){
+            if(temp==null || temp.size() == times.size()){
                 current = current.plusDays(1);
             }
             else{
@@ -126,13 +126,20 @@ public class OrderController {
                     times=this.registrationTimeService.getRegistrationTime();
                 }
                 else{
-                    timeBest = times.get(0);
+                    for (RegistrationTime time: times) {
+                        if(Objects.requireNonNull(ConversionUtils.getTimeFromString(time.getTime())).after(currentTime)){
+                            timeBest = time;
+                            break;
+                        }
+                    }
                     break;
                 }
             }
 
         }while (true);
 
-        return LocalDateTime.of(current, LocalTime.parse(timeBest.getTime()));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
+        LocalTime temp =  LocalTime.parse(timeBest.getTime(),formatter);
+        return LocalDateTime.of(current,temp);
     }
 }

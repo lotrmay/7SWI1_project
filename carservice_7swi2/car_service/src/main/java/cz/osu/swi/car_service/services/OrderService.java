@@ -31,4 +31,11 @@ public class OrderService {
         return this.orderRepository.getRegistrationTimesWithOrders(date);
     }
 
+    public List<Order> getOrdersForDay(LocalDate date){
+        return this.orderRepository.getOrdersForDay(date);
+    }
+
+    public Order getOrderForDateTime(RegistrationTime time, LocalDate date){
+        return this.orderRepository.getOrderForDateTime(time, date);
+    }
 }

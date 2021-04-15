@@ -14,15 +14,16 @@ const TimeBox = (props) => {
       fetchRegistrationTimes();
   },[]);
 
-  if (typeof( props.AvailableTime) !== 'undefined' &&  props.AvailableTime != null) {
-    document.getElementById("carTime").value=props.AvailableTime.substring(0,props.AvailableTime.lastIndexOf(":"));
-  }
+  function setValue(){
+    if (typeof(props.AvailableTime) !== 'undefined' &&  props.AvailableTime != null) {
+        return  props.AvailableTime.substring(0,props.AvailableTime.lastIndexOf(":"));
+    }}
 
   return (
     <div>
       <label htmlFor="time">Čas</label>                    
       <select 
-       name="time" id="carTime">
+       name="time" id="carTime" value={setValue()}>
         {registrationTimes.map((registrationTime) => 
           <option key={registrationTime.id} value={registrationTime.time}>{registrationTime.time}</option>)}
       </select>
