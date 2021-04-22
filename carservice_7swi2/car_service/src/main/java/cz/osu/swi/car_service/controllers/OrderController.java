@@ -89,7 +89,7 @@ public class OrderController {
             addressService.saveAddress(address);
         }
 
-        Customer customer = customerService.getIfCustomerExists(name, surname, phone, email);
+        Customer customer = customerService.getCustomerIfExists(name, surname, phone, email);
         if (customer == null) {
             customer = new Customer(name, surname, phone, email, address);
             customerService.saveCustomer(customer);

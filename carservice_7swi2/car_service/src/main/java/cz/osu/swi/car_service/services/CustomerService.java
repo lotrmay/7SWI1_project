@@ -14,16 +14,12 @@ public class CustomerService{
         this.customerRepository = customerRepository;
     }
 
-    public Customer getIfCustomerExists(String name,String surname,String telephone_number,String email){
+    public Customer getCustomerIfExists(String name,String surname,String telephone_number,String email){
         return this.customerRepository.checkIfCustomerExists(name, surname, telephone_number, email);
     }
 
     public void saveCustomer(Customer customer){
         this.customerRepository.save(customer);
-    }
-
-    public Customer getCustomer(){
-        return this.customerRepository.getOne(Long.valueOf(4));
     }
 
 }

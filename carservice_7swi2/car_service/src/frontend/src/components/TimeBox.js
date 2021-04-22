@@ -16,7 +16,14 @@ const TimeBox = (props) => {
 
   function setValue(){
     if (typeof(props.AvailableTime) !== 'undefined' &&  props.AvailableTime != null) {
-        return  props.AvailableTime.substring(0,props.AvailableTime.lastIndexOf(":"));
+        let temp;
+
+        if (props.AvailableTime.substring(0,props.AvailableTime.lastIndexOf(":")).startsWith("0",0))
+            temp = props.AvailableTime.substring(1,props.AvailableTime.lastIndexOf(":"))
+        else
+            temp = props.AvailableTime.substring(0,props.AvailableTime.lastIndexOf(":"))
+
+        return temp
     }}
 
   return (

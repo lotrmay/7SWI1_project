@@ -260,7 +260,7 @@ public class ValidationUtilsTest {
         String letters = "";
 
         try {
-            ValidationUtils.containsLettersOnly(lbl, letters);
+            ValidationUtils.containsEmptyStrings(lbl, letters);
             fail("ContainsEmptyStrings should throw an exception because label is null!");
         } catch (IllegalArgumentException exception) {
             assertTrue(exception.getMessage().contains("infoLbl"));
@@ -273,7 +273,7 @@ public class ValidationUtilsTest {
         String[] letters = null;
 
         try {
-            ValidationUtils.containsLettersOnly(lbl, letters);
+            ValidationUtils.containsEmptyStrings(lbl, letters);
             fail("ContainsEmptyStrings should throw an exception because strings is null!");
         } catch (IllegalArgumentException exception) {
             assertTrue(exception.getMessage().contains("strings"));

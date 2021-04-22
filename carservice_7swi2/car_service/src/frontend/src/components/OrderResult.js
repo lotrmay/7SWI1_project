@@ -61,7 +61,7 @@ const OrderResult = (props) => {
           
       </div>
       <div id="topRightRightPart">
-      <button id="orderButton" onClick={getValues} type="button">
+      <button id="orderButton" onClick={getValues} type="submit">
         <h2>Vytvořit</h2>
       </button>
       </div>

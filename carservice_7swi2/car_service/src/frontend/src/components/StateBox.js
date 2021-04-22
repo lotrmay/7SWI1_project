@@ -26,7 +26,7 @@ const StateBox = () => {
       </select>
       <label htmlFor="phone">Telefon</label>
       <input readOnly name="phone" type="text" id="telephoneCode" value={telephone}/>
-      <input type="text" id="telephoneInput"/>
+      <input placeholder="Např. 741258963" required type="text" id="telephoneInput"/>
     </div>
 )}
 

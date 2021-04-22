@@ -25,7 +25,7 @@ public class RegistrationTimeController {
     }
 
     @GetMapping("/RegistrationTimes")
-    public List<RegistrationTime> showStates(){
+    public List<RegistrationTime> showRegistrationTimes(){
         return registrationTimeService.getRegistrationTime();
     }
 
