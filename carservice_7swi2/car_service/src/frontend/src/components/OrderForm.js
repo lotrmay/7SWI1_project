@@ -23,7 +23,7 @@ const OrderForm = () => {
 
     return (
         <div id="formWrapper">
-        <form id="orderForm" action="javascript:void(0);">
+        <form id="orderForm" action="// eslint-disable-next-line javascript:void(0);">
             <h1 id="mainTitle">Vytvoření objednávky</h1>
             <div id="leftPart">
                 <ServiceButton id="carServis" description="Autoservis" imageSrc={imageCarService} />
