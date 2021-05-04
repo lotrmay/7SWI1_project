@@ -1,12 +1,34 @@
 package cz.osu.swi.car_service.utils;
 
+import cz.osu.swi.car_service.models.Order;
+import cz.osu.swi.car_service.repository.OrderRepository;
+import cz.osu.swi.car_service.repository.RegistrationTimeRepository;
+import cz.osu.swi.car_service.services.OrderService;
+import cz.osu.swi.car_service.services.RegistrationTimeService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
+@ExtendWith(MockitoExtension.class)
 class ValidationUtilsTest {
+    @Mock
+    private RegistrationTimeRepository registrationTimeRepository;
+    @Mock
+    private OrderRepository orderRepository;
+
+    @InjectMocks
+    private RegistrationTimeService registrationTimeService;
+    @InjectMocks
+    private OrderService orderService;
 
     @Test
     public void checkServicesForNullInput() {
@@ -140,24 +162,22 @@ class ValidationUtilsTest {
     }
 
     @Test
-    public void checkGrammarRulesForStandardInput() {
-        LocalDate datePart = LocalDate.parse("2029-12-27");
+    public void checkOrderDataForStandardInput() {
         String time = "15:00";
 
-        Assertions.assertTrue(ValidationUtils.checkGrammarRules("789456as", "Sedan", "1985", datePart, time, "Petr",
+        Assertions.assertTrue(ValidationUtils.checkOrderData("789456as", "Sedan", "1985", "2029-12-27", time, "Petr",
                 "Vomáčka", "789456123", "vomacka@seznam.cz", "Brno", "Dutá", "45", "78945",
-                1, 0, 1).isEmpty(),
+                1, 0, 1,registrationTimeService,orderService).isEmpty(),
                 "checkGrammarRules should return Optional.empty");
     }
 
     @Test
-    public void checkGrammarRulesForNonStandardInput() {
-        LocalDate datePart = LocalDate.parse("2020-12-27");
+    public void checkOrderDataForNonStandardInput() {
         String time = "15:00";
 
-        Assertions.assertFalse(ValidationUtils.checkGrammarRules("789456ahhhs", "Sedan", "21985", datePart, time, "Petr",
+        Assertions.assertFalse(ValidationUtils.checkOrderData("789456ahhhs", "Sedan", "21985", "2020-12-27", time, "Petr",
                 "Vomáčka18", "78945612h3", "vomacka@seznam.cz", "Brno", "Dut8á", "4f5", "78945",
-                1, 0, 1).isEmpty(),
+                1, 0, 1,registrationTimeService,orderService).isEmpty(),
                 "checkGrammarRules should return an error message");
     }
 

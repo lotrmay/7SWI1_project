@@ -1,5 +1,12 @@
 package cz.osu.swi.car_service.utils;
 
+import cz.osu.swi.car_service.models.Order;
+import cz.osu.swi.car_service.models.RegistrationTime;
+import cz.osu.swi.car_service.services.OrderService;
+import cz.osu.swi.car_service.services.RegistrationTimeService;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -25,7 +32,7 @@ public class ValidationUtils {
      * @param registrationPlate String that represents registration plate of a car
      * @param typeOfCar String that represents type of a car
      * @param yearOfProduction String that represents year of production of a car
-     * @param dateOfOrder LocalDate that represents order fulfillment date
+     * @param dateOfOrder String that represents order fulfillment date
      * @param time String that represents time for order creation
      * @param name String that represents name of customer
      * @param surname String that represents surname of customer
@@ -38,18 +45,22 @@ public class ValidationUtils {
      * @param carService int that represents service that customer picked
      * @param tireService int that represents service that customer picked
      * @param otherService int that represents service that customer picked
+     * @param registrationTimeService service that is used
+     * @param orderService service that is used
+     *
      * @return Optional.empty if all inputs are valid, otherwise it returns Optional.of(error message)
      */
-    public static Optional<String> checkGrammarRules(String registrationPlate, String typeOfCar, String yearOfProduction, LocalDate dateOfOrder, String time,
-                                                     String name, String surname, String telephone, String email,
-                                                     String city, String street, String streetCode, String postCode, int carService, int tireService, int otherService) {
+    public static Optional<String> checkOrderData(String registrationPlate, String typeOfCar, String yearOfProduction, String dateOfOrder, String time,
+                                                  String name, String surname, String telephone, String email,
+                                                  String city, String street, String streetCode, String postCode, int carService, int tireService, int otherService,
+                                                  RegistrationTimeService registrationTimeService, OrderService orderService) {
 
         Optional<String> temp;
 
         temp = checkServices(carService,tireService,otherService);
         if (temp.isPresent()) return temp;
 
-        temp = containsEmptyStrings(registrationPlate, typeOfCar, yearOfProduction, name, surname, telephone, email, city, street, streetCode, postCode);
+        temp = containsEmptyStrings(registrationPlate, typeOfCar, yearOfProduction, dateOfOrder, name, surname, telephone, email, city, street, streetCode, postCode);
         if (temp.isPresent()) return temp;
 
         temp = containsLettersOnly(typeOfCar, name, surname, city, street);
@@ -58,16 +69,26 @@ public class ValidationUtils {
         temp = containsNumbersOnly(yearOfProduction, telephone, postCode);
         if (temp.isPresent()) return temp;
 
+        LocalDate dateOfFulfillment = null;
+        int carYearOfProduction = 0;
+
+        try {
+            carYearOfProduction = Integer.parseInt(TextUtils.removeAllWhiteSpaces(yearOfProduction));
+            dateOfFulfillment = ConversionUtils.convertStringToLocalDate(dateOfOrder);
+        } catch (Exception e) {
+            return Optional.of("Data jsou ve špatném formátu!");
+        }
+
         if (!TextUtils.isValidEmailAddress(email))
             return Optional.of("Špatně zadaný email!");
 
-        temp = checkYear(Integer.parseInt(yearOfProduction));
+        temp = checkYear(carYearOfProduction);
         if (temp.isPresent()) return temp;
 
         if (!TextUtils.checkTelephoneFormat(telephone))
             return Optional.of("Špatně zadaný telefon!");
 
-        temp = checkOrderDate(dateOfOrder,time);
+        temp = checkOrderDate(dateOfFulfillment,time);
         if (temp.isPresent()) return temp;
 
         //region Grammar length
@@ -116,6 +137,12 @@ public class ValidationUtils {
         temp = checkLengthOfText(postCode, 15, 4, String.format("Maximální délka %s je %d", "PSČ", 15), String.format("Minimální délka %s je %d", "PSČ", 4));
         if (temp.isPresent()) return temp;
         //endregion
+
+        RegistrationTime timeForRegistration = registrationTimeService.getRegistrationTimeForOrder(ConversionUtils.getTimeFromString(time));
+        Order order = orderService.checkIfRegistrationTimeIsReserved(dateOfFulfillment, timeForRegistration);
+
+        if (order != null)
+            return Optional.of("Termín je zabrán objednávkou č. " + order.getId());
 
         return Optional.empty();
     }

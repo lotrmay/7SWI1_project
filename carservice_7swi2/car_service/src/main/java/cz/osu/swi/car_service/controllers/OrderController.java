@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,20 +21,13 @@ import java.util.*;
 @RequestMapping(path = "/OrderCreation")
 @CrossOrigin("*")
 public class OrderController {
-
-    private final RegistrationTimeService registrationTimeService;
     private final OrderService orderService;
-    private final StateService stateService;
-    private final AddressService addressService;
-    private final CustomerService customerService;
+    private final RegistrationTimeService registrationTimeService;
 
     @Autowired
-    public OrderController(RegistrationTimeService registrationTimeService, OrderService orderService, StateService stateService, AddressService addressService, CustomerService customerService) {
+    public OrderController(RegistrationTimeService registrationTimeService, OrderService orderService) {
         this.registrationTimeService = registrationTimeService;
         this.orderService = orderService;
-        this.stateService = stateService;
-        this.addressService = addressService;
-        this.customerService = customerService;
     }
 
     @PostMapping("/post")
@@ -61,48 +53,19 @@ public class OrderController {
         Time time = ConversionUtils.getTimeFromString((String) payLoad.get("carTimeTitle"));
         String note = (String) payLoad.get("note");
 
-        LocalDate dateOfFulfillment = null;
-        int carYearOfProduction = 0;
-        try {
-            carYearOfProduction = Integer.parseInt(TextUtils.removeAllWhiteSpaces((String) payLoad.get("carYearTitle")));
-            dateOfFulfillment = ConversionUtils.convertStringToLocalDate((String) payLoad.get("orderDateTitle"));
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Data jsou ve špatném formátu!", e);
-        }
-
-        Optional<String> temp = ValidationUtils.checkGrammarRules(carPlate, carType, String.valueOf(carYearOfProduction),
-                dateOfFulfillment, String.valueOf(time),
-                name, surname, phone, email, city, street, streetNumber, postCode, carServis, pneuServis, otherServices);
+        Optional<String> temp = ValidationUtils.checkOrderData(carPlate, carType, String.valueOf(payLoad.get("carYearTitle")),
+                (String) payLoad.get("orderDateTitle"), String.valueOf(time),
+                name, surname, phone, email, city, street, streetNumber, postCode, carServis, pneuServis, otherServices,registrationTimeService,orderService);
 
         if (temp.isPresent()) throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, temp.get());
 
-        RegistrationTime timeForRegistration = registrationTimeService.getRegistrationTimeForOrder(time);
-        Order order = orderService.checkIfRegistrationTimeIsReserved(dateOfFulfillment, timeForRegistration);
 
-        if (order != null)
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Termín je zabrán objednávkou č. " + order.getId());
+        int carYearOfProduction = Integer.parseInt(TextUtils.removeAllWhiteSpaces((String) payLoad.get("carYearTitle")));
+        LocalDate dateOfFulfillment = ConversionUtils.convertStringToLocalDate((String) payLoad.get("orderDateTitle"));
 
-        State state = stateService.getStateByShortcut(countryShortcut);
-        Address address = addressService.getAddressIfExists(city, street, streetNumber, postCode, state);
-        if (address == null) {
-            address = new Address(city, street, streetNumber, postCode, state);
-            addressService.saveAddress(address);
-        }
+        orderService.saveOrder(carPlate, carType, dateOfFulfillment, carYearOfProduction, carServis, pneuServis, otherServices, note, name, surname, phone, email, city, street, streetNumber, postCode, countryShortcut, time);
 
-        Customer customer = customerService.getCustomerIfExists(name, surname, phone, email);
-        if (customer == null) {
-            customer = new Customer(name, surname, phone, email, address);
-            customerService.saveCustomer(customer);
-        } else if (customer.getAddress().getId() != address.getId()) {
-            customer.setAddress(address);
-            customerService.saveCustomer(customer);
-        }
-
-        Order newOrder = new Order(carPlate, carType, dateOfFulfillment, carYearOfProduction, carServis, pneuServis, otherServices, note, customer, timeForRegistration);
-
-        orderService.saveOrder(newOrder);
-
-        throw new ResponseStatusException(HttpStatus.ACCEPTED, "Objednávka byla úspěšně zaregistrována !");
+        throw new ResponseStatusException(HttpStatus.ACCEPTED, "Objednávka byla úspěšně zaregistrována!");
     }
 
     @GetMapping("/getAvailableTime")
